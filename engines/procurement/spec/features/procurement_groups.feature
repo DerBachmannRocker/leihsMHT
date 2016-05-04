@@ -1,4 +1,4 @@
-Feature: Procurement Groups
+Feature: categories
 
   @procurement_groups
   Scenario: Creating the main categories
