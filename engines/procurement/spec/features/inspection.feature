@@ -6,10 +6,10 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
   @inspection
   Scenario: What to see in section "Requests" as inspector
     Given I am Barbara
-    And several requests exist for my groups
+    And several requests exist for my categories
     When I navigate to the requests overview page
     Then the current budget period is selected
-    And only my groups are selected
+    And only my categories are selected
     And all organisations are selected
     And both priorities are selected
     And the state "In inspection" is not present
@@ -19,20 +19,20 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
     And I see the headers of the columns of the overview
     And I see the amount of requests listed
     And I see the current budget period
-    And I see the requested amount per budget period
-    And I see the requested amount per group of each budget period
-    And I see the budget limits of all groups
-    And I see the total of all ordered amounts of each group
-    And I see the total of all ordered amounts of a budget period
-    And I see the percentage of budget used compared to the budget limit of my group
+    And I see the total amount of each sub category for each budget period
+    And the total amount is calculated by adding the following amounts
+    | requested quantity  | state new                |
+    | order quantity      | state accepted           |
+    | order quantity      | state partially accepted |
+    And I see the budget limit of each main category for each budget period
+    And I see the total amount of each main category for each budget period
+    And the total amount is calculated by adding all totals of the sub category
+    And I see the percentage of budget used compared to the budget limit of the main categories
     And I see when the requesting phase of this budget period ends
     And I see when the inspection phase of this budget period ends
-    And only my groups are shown
     And for each request I see the following information
       | article name          |
       | name of the requester |
-      | department            |
-      | organisation          |
       | price                 |
       | requested amount      |
       | approved amount       |
@@ -56,7 +56,7 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
   @inspection
   Scenario: Using the filters as inspector
     Given I am Barbara
-    And templates for my group exist
+    And templates for my categories exist
     And following requests exist for the current budget period
       | quantity | user   |
       | 2        | myself |
@@ -64,7 +64,7 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
     When I navigate to the requests overview page
     And I select "Only show my own requests"
     And I select the current budget period
-    And I select all groups
+    And I select all categories
     And I select all organisations
     And I select both priorities
     And I select all states
@@ -72,7 +72,7 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
     Then the list of requests is adjusted immediately
     And I see both my requests
     And I see the amount of requests which are listed is 2
-    When I navigate to the templates page of my group
+    When I navigate to the templates page
     And I navigate back to the request overview page
     Then the filter settings have not changed
 
@@ -112,7 +112,7 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
   Scenario: Creating a request for another user
     Given I am Barbara
     When I navigate to the requests overview page
-    And I press on the Userplus icon of a group I am inspecting
+    And I press on the Userplus icon of a sub category I am inspecting
     Then I am navigated to the requester list
     When I pick a requester
     Then I am navigated to the new request form for the requester
@@ -175,15 +175,15 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
     And I can not submit the data
 
   @inspection
-  Scenario: Moving request as inspector to another group
+  Scenario: Moving request as inspector to another category
     Given I am Barbara
-    And several groups exist
+    And several categories exist
     And the current budget period is in inspection phase
     And following requests exist for the current budget period
       | quantity | user  | group     |
       | 3        | Roger | inspected |
     When I navigate to the requests form of Roger
-    And I move a request to the other group where I am not inspector
+    And I move a request to the other category where I am not inspector
     Then I see a success message
     And the changes are saved successfully to the database
     And the following information is deleted from the request

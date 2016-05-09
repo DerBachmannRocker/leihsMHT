@@ -9,7 +9,7 @@ Feature: section Managing Requests
     And several requests created by myself exist
     When I navigate to the requests overview page
     Then the current budget period is selected
-    And all groups in the filter groups are selected
+    And only categories containing requests are selected
     And both priorities are selected
     And the state "In inspection" is present
     And all states are selected
@@ -19,10 +19,11 @@ Feature: section Managing Requests
     And I see the amount of requests listed
     And I see the current budget period
     And I see the requested amount per budget period
-    And I see the requested amount per group of each budget period
+    And I see the requested amount per category of each budget period
     And I see when the requesting phase of this budget period ends
     And I see when the inspection phase of this budget period ends
-    And I see all groups
+    And I see all sub categories containing requests
+    And I see all main categories of the shown sub categories
     And only my requests are shown
     And for each request I see the following information
       | article name          |
@@ -42,7 +43,7 @@ Feature: section Managing Requests
     When I navigate to the requests overview page
     Then I do not see the filter "Only show my own requests"
     When I select one or more budget periods
-    And I select one or more groups
+    And I select one or more categories
     And I select one ore both priorities
     And I select one or more states
     And I enter a search string
@@ -77,10 +78,10 @@ Feature: section Managing Requests
     And the request with all given information was created successfully in the database
 
   @managing_requests
-  Scenario Outline: Creating a request for a group
+  Scenario Outline: Creating a request for a category
     Given I am <username>
     When I navigate to the requests overview page
-    And I press on the plus icon of a group
+    And I press on the plus icon of a sub category
     Then I am navigated to the new request form
     When I fill in the following fields
       | key                | value  |
@@ -107,8 +108,10 @@ Feature: section Managing Requests
     And I see the budget period
     And I see when the requesting phase of this budget period ends
     And I see when the inspection phase of this budget period ends
-    And I see all categories of all groups listed
-    When I press on a category
+    And I see all main categories
+    When I press on a main category
+    Then I see the sub categories of this main category
+    When I press on a sub category
     Then I see all template articles of this category
     When I choose a template article
     Then I am navigated to the template request form of the specific group
@@ -121,95 +124,99 @@ Feature: section Managing Requests
       | Barbara  |
       | Roger    |
 
-  @managing_requests
-  Scenario Outline: Creating a request through a budget period selecting a group
-    Given I am <username>
-    When I navigate to the requests overview page
-    And I select "Only show my own requests" if present
-    And I press on the plus icon of the budget period
-    Then I am navigated to the templates overview
-    And I see all groups listed
-    When I choose a group
-    Then I am navigated to the new request form of the specific group
-    When I fill in all mandatory information
-    And I click on save
-    Then I see a success message
-    And the request with all given information was created successfully in the database
-    Examples:
-      | username |
-      | Barbara  |
-      | Roger    |
+  # not needed anymore
+  #@managing_requests
+  #Scenario Outline: Creating a request through a budget period selecting a group
+  #  Given I am <username>
+  #  When I navigate to the requests overview page
+  #  And I select "Only show my own requests" if present
+  #  And I press on the plus icon of the budget period
+  #  Then I am navigated to the templates overview
+  #  And I see all groups listed
+  #  When I choose a group
+  #  Then I am navigated to the new request form of the specific group
+  #  When I fill in all mandatory information
+  #  And I click on save
+  #  Then I see a success message
+  #  And the request with all given information was created successfully in the database
+  #  Examples:
+  #    | username |
+  #    | Barbara  |
+  #    | Roger    |
 
-  @managing_requests
-  Scenario Outline: Creating a freetext request inside the new request page
-    Given I am <username>
-    And I am on the new request form of a group
-    When I press on the plus icon on the left sidebar
-    Then a new request line is added
-    When I fill in all mandatory information
-    And I click on save
-    Then I see a success message
-    And the request with all given information was created successfully in the database
-    Examples:
-      | username |
-      | Barbara  |
-      | Roger    |
+  # not needed anymore
+  #@managing_requests
+  #Scenario Outline: Creating a freetext request inside the new request page
+  #  Given I am <username>
+  #  And I am on the new request form of a group
+  #  When I press on the plus icon on the left sidebar
+  #  Then a new request line is added
+  #  When I fill in all mandatory information
+  #  And I click on save
+  #  Then I see a success message
+  #  And the request with all given information was created successfully in the database
+  #  Examples:
+  #    | username |
+  #    | Barbara  |
+  #    | Roger    |
 
-  @managing_requests
-  Scenario: Creating a request from a group template inside the new request page as inspector
-    Given I am Barbara
-    And several template categories exist
-    And several template articles in categories exist
-    And each template article contains
-      | Article nr. / Producer nr. |
-      | Supplier                   |
-      | Item price                 |
-    When I navigate to the templates overview
-    And I press on a category
-    And I choose a template article
-    Then I am navigated to the template request form of the specific group
-    And the following template data are prefilled
-      | Article / Project          |
-      | Article nr. / Producer nr. |
-      | Supplier                   |
-      | Item price                 |
-    And no option is chosen yet for the field Replacement / New
-    And I fill in the following fields
-      | key                        | value  |
-      | Motivation                 | random |
-    And I choose the following replacement value
-      | New |
-    And I click on save
-    Then I see a success message
-    And the request with all given information was created successfully in the database
+  # not needed anymore
+  #@managing_requests
+  #Scenario: Creating a request from a group template inside the new request page as inspector
+  #  Given I am Barbara
+  #  And several template categories exist
+  #  And several template articles in categories exist
+  #  And each template article contains
+  #    | Article nr. / Producer nr. |
+  #    | Supplier                   |
+  #    | Item price                 |
+  #  When I navigate to the templates overview
+  #  And I press on a category
+  #  And I choose a template article
+  #  Then I am navigated to the template request form of the specific group
+  #  And the following template data are prefilled
+  #    | Article / Project          |
+  #    | Article nr. / Producer nr. |
+  #    | Supplier                   |
+  #    | Item price                 |
+  #  And no option is chosen yet for the field Replacement / New
+  #  And I fill in the following fields
+  #    | key                        | value  |
+  #    | Motivation                 | random |
+  #  And I choose the following replacement value
+  #    | New |
+  #  And I click on save
+  #  Then I see a success message
+  #  And the request with all given information was created successfully in the database
 
-  @managing_requests
-  Scenario: Creating a request from a group template inside the new request page as requester
-    Given I am Roger
-    And several template categories exist
-    And several template articles in categories exist
-    And each template article contains
-      | Article nr. / Producer nr. |
-      | Supplier                   |
-      | Item price                 |
-    When I navigate to the templates overview
-    And I press on a category
-    And I choose a template article
-    Then I am navigated to the template request form of the specific group
-    And the following template data are displayed as read-only
-      | Article / Project          |
-      | Article nr. / Producer nr. |
-      | Supplier                   |
-      | Item price                 |
-    And no option is chosen yet for the field Replacement / New
-    And I fill in the following fields
-      | key                        | value  |
-      | Motivation                 | random |
-    And I choose the following replacement value
-      | New |
-    And I click on save
-    Then I see a success message
-    And the request with all given information was created successfully in the database
+  # not needed anymore
+  # @managing_requests
+  #Scenario: Creating a request from a group template inside the new request page as requester
+  #  Given I am Roger
+  #  And several template categories exist
+  #  And several template articles in categories exist
+  #  And each template article contains
+  #    | Article nr. / Producer nr. |
+  #    | Supplier                   |
+  #    | Item price                 |
+  #  When I navigate to the templates overview
+  #  And I press on a category
+  #  And I choose a template article
+  #  Then I am navigated to the template request form of the specific group
+  #  And the following template data are displayed as read-only
+  #    | Article / Project          |
+  #    | Article nr. / Producer nr. |
+  #    | Supplier                   |
+  #    | Item price                 |
+  #  And no option is chosen yet for the field Replacement / New
+  #  And I fill in the following fields
+  #    | key                        | value  |
+  #    | Motivation                 | random |
+  #  And I choose the following replacement value
+  #    | New |
+  #  And I click on save
+  #  Then I see a success message
+  #  And the request with all given information was created successfully in the database
 
   @managing_requests
   Scenario Outline: Inserting an already inserted template article
@@ -220,7 +227,7 @@ Feature: section Managing Requests
     Then I am navigated to the request containing this template article
     Examples:
       | username |
-      | Barbara  |
+      | Barbara  | #for barbara this doesn't work does it? More than one request can contain the same template article
       | Roger    |
 
   @managing_requests
@@ -236,13 +243,13 @@ Feature: section Managing Requests
     When I click on save
     Then I see a success message
     And the request with all given information was created successfully in the database
-    And the template id is nullified in the database
+    #And the template id is nullified in the database -- not needed anymore. inspectors want to keep the relationship after all
 
   @managing_requests
   Scenario Outline: Request deleted because no information entered
     Given I am <username>
     When I navigate to the requests overview page
-    And I press on the plus icon of a group
+    And I press on the plus icon of the current budget period
     Then I am navigated to the new request form
     When I type the first character in a field of the request form
     Then the following fields are mandatory and marked red
@@ -266,7 +273,7 @@ Feature: section Managing Requests
     Given I am <username>
     And several requests created by myself exist
     When I navigate to the requests overview page
-    And I select all groups
+    And I select all categories
     And I sort the requests by "<field>"
     Then the data is shown in the according sort order
     Examples:
@@ -298,7 +305,7 @@ Feature: section Managing Requests
       | user          | myself  |
     When I navigate to the requests overview page
     And I select all budget periods
-    And I select all groups
+    And I select all categories
     And I open the request
     And I delete the request
     Then I receive a message asking me if I am sure I want to delete the data
@@ -327,7 +334,8 @@ Feature: section Managing Requests
     Given I am <username>
     And several models exist
     When I navigate to the requests form of myself
-    When I press on the plus icon on the left sidebar
+    And I press on the plus icon of a category
+    Then I am navigated to an empty request
     When I search an existing model by typing the article name
     And I choose the article from the suggested list
     Then the model name is copied into the article name field
@@ -354,13 +362,13 @@ Feature: section Managing Requests
     And the changes are saved successfully to the database
 
   @managing_requests
-  Scenario: Moving request to another group as requester only
+  Scenario: Moving request to another category as requester only
     Given I am Roger
-    And several groups exist
+    And several categories exist
     And several requests created by myself exist
     And the current date has not yet reached the inspection start date
     When I navigate to the requests form of myself
-    And I move a request to the other group
+    And I move a request to the other category
     Then I see a success message
     And the changes are saved successfully to the database
 
@@ -443,16 +451,15 @@ Feature: section Managing Requests
       | Barbara  |
       | Roger    |
 
+
   @managing_requests
-  Scenario Outline: Send an email to a group
+  Scenario Outline: Send an email to the procurement support
     Given I am <username>
-    And an email for a group exists
-    When I navigate to the requests form of myself
-    And I click on the email icon
+    And an email for the procurement support exists
+    When I click on the email icon
     Then the email program is opened
-    And the receiver of the email is the email of the group
+    And the receiver of the email is the email of the procurement support
     And the subject of the email is "Frage zum Beschaffungsantrag"
-    And the group name is placed in paranthesis at the end of the subject
     Examples:
       | username |
       | Barbara  |
