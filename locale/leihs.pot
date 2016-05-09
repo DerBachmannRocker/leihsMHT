@@ -3121,7 +3121,7 @@ msgstr ""
 msgid "Current budget period not defined yet"
 msgstr ""
 
-msgid "No groups defined yet"
+msgid "No categories defined yet"
 msgstr ""
 
 msgid "No admins defined yet"

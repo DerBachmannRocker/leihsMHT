@@ -14,7 +14,7 @@ Feature: Exporting the data to a CSV-File
     And I export the shown information
     Then the following fields are exported
       | Budget period              |
-      | Group                      |
+      | Category                   |
       | Requester                  |
       | Organisation unit          |
       | Article / Project          |

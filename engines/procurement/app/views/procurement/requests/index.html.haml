@@ -1,6 +1,6 @@
 :ruby
-  is_editable = ((@budget_period.in_requesting_phase? and (@user == current_user or @group.inspectable_by?(current_user))) or
-                 (@budget_period.in_inspection_phase? and @group.inspectable_by?(current_user)))
+  is_editable = ((@budget_period.in_requesting_phase? and (@user == current_user or @category.inspectable_by?(current_user))) or
+                 (@budget_period.in_inspection_phase? and @category.inspectable_by?(current_user)))
 
 = form_tag nil, remote: true, multipart: true, class: 'form-horizontal' do
   .panel{class: "panel-#{header_color(@budget_period)}"}
@@ -19,16 +19,16 @@
           %h4
             %i.fa.fa-plus-circle
             = _('Add article')
-          - if @group.template_categories.exists?
+          - if @category.template_categories.exists?
             %hr
-            = render partial: 'procurement/templates/categories', locals: {template_categories: @group.template_categories}
+            = render partial: 'procurement/templates/categories', locals: {template_categories: @category.template_categories}
 
       - i = 0
       - @requests.each do |request|
         = render partial: 'request', locals: {request: request}
 
       - if is_editable
-        - @group.template_categories.each do |template_category|
+        - @category.template_categories.each do |template_category|
           - template_category.templates.where.not(id: @requests.map(&:template_id)).each do |template|
             - i += 1
             = render partial: 'template', locals: {template: template, i: i}

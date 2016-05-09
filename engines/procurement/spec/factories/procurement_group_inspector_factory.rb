@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :procurement_group_inspector, class: Procurement::GroupInspector do
+  factory :procurement_category_inspector, class: Procurement::CategoryInspector do
     association :user
-    association :group, factory: :procurement_group
+    association :category, factory: :procurement_category
   end
 end

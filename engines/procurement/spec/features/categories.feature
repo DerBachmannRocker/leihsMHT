@@ -1,5 +1,6 @@
+Feature: Procurement Categories
 
-  @procurement_groups
+  @categories
   Scenario: Creating the main categories
     Given I am Hans Ueli
     And a budget period exist
@@ -14,20 +15,21 @@
     And the new category appears in the list
     And the new category was created in the database
 
+  @categories
   Scenario: Creating the sub categories
-  Given I am Hans Ueli
-  And a category exists
-  And there exists 2 users to become the inspectors
-  When I navigate to the categories edit page
-  And I click on the add sub category button
-  And I fill in the sub category name
-  And I fill in the inspectors' names
-  And I click on save
-  Then I am redirected to the category index page
-  And the new sub category appears in the list
-  And the new sub category was created in the database
+    Given I am Hans Ueli
+    And a category exists
+    And there exists 2 users to become the inspectors
+    When I navigate to the categories edit page
+    And I click on the add sub category button
+    And I fill in the sub category name
+    And I fill in the inspectors' names
+    And I click on save
+    Then I am redirected to the category index page
+    And the new sub category appears in the list
+    And the new sub category was created in the database
 
-  @procurement_groups
+  @categories
   Scenario: Editing a main category
     Given I am Hans Ueli
     And there exists a main category
@@ -43,6 +45,7 @@
     And I see a success message
     And all the information of the category was successfully updated in the database
 
+  @categories
   Scenario: Editing a sub category
     Given I am Hans Ueli
     And a sub category exists
@@ -56,7 +59,7 @@
     And I see a success message
     And all the information of the category was successfully updated in the database
 
-  @procurement_groups
+  @categories
   Scenario: Deleting a main category
     Given I am Hans Ueli
     And there exists a category without any requests
@@ -68,7 +71,7 @@
     Then the main and the sub categories disappear from the list
     And the categories were successfully deleted from the database
 
-  @procurement_groups
+  @categories
   Scenario: Deleting a sub category
     Given I am Hans Ueli
     And there exists a sub category without any requests
@@ -79,7 +82,7 @@
     Then the sub category disappears from the list
     And the category is successfully deleted from the database
 
-  @procurement_groups
+  @categories
   Scenario: Sorting of categories
     Given I am Hans Ueli
     And 3 main categories exist
@@ -88,7 +91,7 @@
     Then the main categories are sorted 0-10 and a-z
     And the sub categories are sorted 0-10 and a-z
 
-  @procurement_groups
+  @categories
   Scenario: Overview of the categories
     Given I am Hans Ueli
     And there exists a category
@@ -97,6 +100,7 @@
     And the sub category line contains the name of the category
     And the sub category line contains the names of the inspectors
 
+  @categories
   Scenario: main category required fields
     Given I am Hans Ueli
     And there does not exist any category yet
@@ -108,7 +112,7 @@
     And I see an error message
     And the new category has not been created
 
-  @procurement_groups
+  @categories
   Scenario: sub category required fields
     Given I am Hans Ueli
     And there does not exist any category yet

@@ -11,10 +11,10 @@ module Procurement
         end
         @filter['user_id'] ||= @user.id if @user
         @filter['budget_period_ids'] ||= [Procurement::BudgetPeriod.current.id]
-        @filter['group_ids'] ||= begin
-          r = Procurement::GroupInspector.where(user_id: current_user) \
-            .pluck(:group_id)
-          r = Procurement::Group.pluck(:id) if r.empty?
+        @filter['category_ids'] ||= begin
+          r = Procurement::CategoryInspector.where(user_id: current_user) \
+            .pluck(:category_id)
+          r = Procurement::Category.pluck(:id) if r.empty?
           r
         end
         @filter['priorities'] ||= ['high', 'normal']
@@ -30,7 +30,7 @@ module Procurement
         Procurement::BudgetPeriod.order(end_date: :desc) \
           .find(@filter['budget_period_ids']).each do |budget_period|
 
-          k = { group_id: @filter['group_ids'], priority: @filter['priorities'] }
+          k = { category_id: @filter['category_ids'], priority: @filter['priorities'] }
           k[:user_id] = @user if @user
           requests = budget_period.requests.search(@filter['search']).where(k)
 
@@ -60,7 +60,7 @@ module Procurement
         @filter['budget_period_ids'] ||= []
         @filter['budget_period_ids'].delete('multiselect-all')
 
-        @filter['group_ids'] ||= []
+        @filter['category_ids'] ||= []
         if @filter['organization_id'].blank?
           @filter['organization_id'] = nil
         end

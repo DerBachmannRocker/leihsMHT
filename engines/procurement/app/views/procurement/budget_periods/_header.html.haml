@@ -15,7 +15,7 @@
         %i.fa.fa-shopping-cart
         = @group
       - if @user
-        - if @group.email
+        -#old#- if @group.email
           %a{href: "mailto:#{@group.email}?subject=#{_('Inquiry to procurement request')} (#{@group.name})"}
             %b
               = succeed ':' do

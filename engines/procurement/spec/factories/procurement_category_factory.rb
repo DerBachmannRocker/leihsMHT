@@ -1,6 +1,5 @@
 FactoryGirl.define do
-  factory :procurement_template_category, class: Procurement::TemplateCategory do
-    association :group, factory: :procurement_group
+  factory :procurement_category, class: Procurement::Category do
     name { Faker::Lorem.sentence }
 
     trait :with_templates do

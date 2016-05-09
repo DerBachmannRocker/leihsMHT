@@ -122,9 +122,9 @@ module NavigationSteps
     end
     within '.navbar' do
       click_on _('Admin')
-      click_on _('Groups')
+      click_on _('Categories')
     end
-    expect(page).to have_selector('h1', text: _('Groups'))
+    expect(page).to have_selector('h1', text: _('Categories'))
   end
 
   step 'I navigate to the organisation tree page' do

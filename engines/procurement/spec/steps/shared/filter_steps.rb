@@ -78,8 +78,8 @@ module FilterSteps
 
   step 'I select all :string_with_spaces' do |string_with_spaces|
     text = case string_with_spaces
-           when 'groups'
-               _('Groups')
+           when 'categories'
+               _('Categories')
            when 'budget periods'
                _('Budget periods')
            when 'organisations'
@@ -137,8 +137,8 @@ module FilterSteps
   step 'I select one or more :string_with_spaces' do |string_with_spaces|
     @filter ||= {}
     text, key = case string_with_spaces
-                when 'groups'
-                  [_('Groups'), :group_ids]
+                when 'categories'
+                  [_('Categories'), :category_ids]
                 when 'budget periods'
                   [_('Budget periods'), :budget_period_ids]
                 when 'states'

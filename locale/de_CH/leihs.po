@@ -3218,8 +3218,8 @@ msgstr "Sie sind für diese Aktion nicht authorisiert."
 msgid "Current budget period not defined yet"
 msgstr "Es existiert keine aktuelle Budgetperiode"
 
-msgid "No groups defined yet"
-msgstr "Es ist noch keine Gruppe vorhanden"
+msgid "No categories defined yet"
+msgstr "Es ist noch keine Kategorie vorhanden"
 
 msgid "No admins defined yet"
 msgstr "Es wurde noch kein Administrator erfasst"

@@ -19,7 +19,7 @@ Procurement::Engine.routes.draw do
     end
   end
 
-  resources :groups do
+  resources :categories do
     resources :budget_periods, only: [] do
       resources :users, only: [] do
         collection do

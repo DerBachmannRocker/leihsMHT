@@ -140,7 +140,7 @@ steps_for :roles do
     prepare_request
     go_to_request
     find(".row[data-request_id='#{@request.id}'] button .fa-gear").click
-    find("a[href*='move?to_group_id=#{new_group.id}']").click
+    find("a[href*='move?to_category_id=#{new_group.id}']").click
     expect(page).to have_content _('Request moved')
   end
 
@@ -194,7 +194,7 @@ steps_for :roles do
 
   step 'I can not add groups' do
     expect(find('.navbar').text).not_to match _('Admin')
-    visit procurement.groups_path
+    visit procurement.categories_path
     expect(page).to have_content _('You are not authorized for this action.')
   end
 
@@ -301,7 +301,7 @@ steps_for :roles do
     new_group = FactoryGirl.create(:procurement_group)
     go_to_request user: requester
     find(".row[data-request_id='#{@request.id}'] button .fa-gear").click
-    find("a[href*='move?to_group_id=#{new_group.id}']").click
+    find("a[href*='move?to_category_id=#{new_group.id}']").click
     expect(page).to have_content _('Request moved')
   end
 

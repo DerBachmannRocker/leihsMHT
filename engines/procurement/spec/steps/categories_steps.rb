@@ -3,7 +3,7 @@ require_relative 'shared/dataset_steps'
 require_relative 'shared/navigation_steps'
 require_relative 'shared/personas_steps'
 
-steps_for :procurement_groups do
+steps_for :categories do
   include CommonSteps
   include DatasetSteps
   include NavigationSteps

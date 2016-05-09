@@ -1,7 +1,7 @@
-= form_for @group do |f|
+= form_for @category do |f|
   .panel.panel-default
     .panel-heading
-      .h3= _('Group')
+      .h3= _('Category')
 
     .panel-body
       .row
@@ -14,9 +14,9 @@
         .col-sm-4
           = _('Inspectors')
         .col-sm-4
-          %input{name: 'group[inspector_ids]', multiple: true, placeholder: _("Name of the inspector"), autocomplete: :off}
+          %input{name: 'category[inspector_ids]', multiple: true, placeholder: _("Name of the inspector"), autocomplete: :off}
         .col-sm-4
-      .row
+      -#.row
         .col-sm-4
           = _('Email')
         .col-sm-4
@@ -26,7 +26,7 @@
       %h4= _('Budget limits')
 
       - Procurement::BudgetPeriod.order(end_date: :desc).each do |budget_period|
-        - budget_limit = @group.budget_limits.find_or_initialize_by(budget_period_id: budget_period.id)
+        - budget_limit = @category.budget_limits.find_or_initialize_by(budget_period_id: budget_period.id)
         = f.fields_for :budget_limits, budget_limit do |ff|
           .row
             .col-sm-4
@@ -50,7 +50,7 @@
 
 :coffeescript
   $(document).ready ->
-    $("input[name='group[inspector_ids]']").tokenInput '/procurement/users.json',
+    $("input[name='category[inspector_ids]']").tokenInput '/procurement/users.json',
       minChars: 3
       queryParam: 'search_term'
       propertyToSearch: "lastname"
@@ -58,7 +58,7 @@
         "<li>" + item.firstname + " " + item.lastname + "</li>"
       tokenFormatter: (item)->
         "<li>" + item.firstname + " " + item.lastname + "</li>"
-      prePopulate: #{@group.inspectors.sort{|a,b| a.firstname <=> b.firstname}.to_json(only: [:id, :firstname, :lastname])}
+      prePopulate: #{@category.inspectors.sort{|a,b| a.firstname <=> b.firstname}.to_json(only: [:id, :firstname, :lastname])}
       preventDuplicates: true
       hintText: "#{_('Type in a search term')}"
       noResultsText: "#{_('No results')}"

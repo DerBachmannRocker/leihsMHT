@@ -1,42 +1,39 @@
-%h1= _('Groups')
+%h1= _('Categories')
 
 %table.table.table-striped
   %thead
     %tr
       %th.col-xs-4= _('Name')
       %th.col-xs-3= _('Inspectors')
-      %th.col-xs-3= _('Email')
       %th.col-xs-2
   %tbody
-    - @groups.order(:name).each do |group|
+    - @categories.order(:name).each do |category|
       %tr
         %td
-          = group.name
+          = category.name
         %td
           %ul{style: 'padding-left: 15px;'}
-            - group.inspectors.sort{|a,b| a.firstname <=> b.firstname}.each do |inspector|
+            - category.inspectors.sort{|a,b| a.firstname <=> b.firstname}.each do |inspector|
               %li= inspector
-        %td
-          = group.email
         %td.text-right
           .btn-group
-            %a.btn.btn-default{href: edit_group_path(group)}
+            %a.btn.btn-default{href: edit_category_path(category)}
               %i.fa.fa-edit
               = _('Edit')
-            - if group.can_destroy?
+            - if category.can_destroy?
               %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown"}
                 %span.caret
                 %span.sr-only Toggle Dropdown
               %ul.dropdown-menu
                 %li
-                  %a{href: group_path(group), data: {method: :delete, confirm: _("Are you sure you want to delete '%s'?") % group}}
+                  %a{href: category_path(category), data: {method: :delete, confirm: _("Are you sure you want to delete '%s'?") % category}}
                     %i.fa.fa-trash-o
                     = _('Delete')
 
   %tfoot
     %tr
-      %td.text-right{colspan: 4}
-        %a.btn.btn-success{href: new_group_path}
+      %td.text-right{colspan: 3}
+        %a.btn.btn-success{href: new_category_path}
           %i.fa.fa-plus
           = _('Add')
 

@@ -8,8 +8,8 @@ FactoryGirl.define do
                     FactoryGirl.create(:procurement_budget_period)
     end
 
-    # association :group, factory: :procurement_group
-    group { Procurement::Group.first || FactoryGirl.create(:procurement_group) }
+    # association :category, factory: :procurement_category
+    category { Procurement::Category.first || FactoryGirl.create(:procurement_category) }
 
     article_name { Faker::Lorem.sentence }
     motivation { Faker::Lorem.sentence }

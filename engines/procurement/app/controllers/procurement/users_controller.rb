@@ -59,8 +59,8 @@ module Procurement
     end
 
     def choose
-      @group = Procurement::Group.find(params[:group_id])
-      authorize @group, :inspectable_by_user?
+      @category = Procurement::Category.find(params[:category_id])
+      authorize @category, :inspectable_by_user?
 
       @budget_period = BudgetPeriod.find(params[:budget_period_id])
 

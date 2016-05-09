@@ -18,6 +18,6 @@
           %i.fa.fa-shopping-cart
           = _('Add article for specific group')
         .list-group
-          - @groups.each do |group|
-            %a.list-group-item{href: group_budget_period_user_requests_path(group, @budget_period, @user, request_id: 'new_request')}
-              = group
+          - @categories.each do |category|
+            %a.list-group-item{href: category_budget_period_user_requests_path(category, @budget_period, @user, request_id: 'new_request')}
+              = category

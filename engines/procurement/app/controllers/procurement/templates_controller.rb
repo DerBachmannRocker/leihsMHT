@@ -3,16 +3,16 @@ require_dependency 'procurement/application_controller'
 module Procurement
   class TemplatesController < ApplicationController
     def self.policy_class
-      GroupPolicy
+      CategoryPolicy
     end
 
     before_action do
-      @group = Procurement::Group.find(params[:group_id])
-      authorize @group, :inspectable_by_user?
+      @category = Procurement::Category.find(params[:category_id])
+      authorize @category, :inspectable_by_user?
     end
 
     def index
-      @template_categories = @group.template_categories
+      @template_categories = @category.template_categories
     end
 
     def create
@@ -31,7 +31,8 @@ module Procurement
     def create_or_update_or_destroy
       params.require(:template_categories).values.map do |param|
         if param[:id]
-          r = @group.template_categories.find(param[:id])
+          # FIXME
+          r = @category.template_categories.find(param[:id])
           if param.delete(:_destroy) == '1' or (param[:name].blank? \
             and param[:templates_attributes].flat_map(&:values).all?(&:blank?))
             r.destroy
@@ -41,7 +42,7 @@ module Procurement
         else
           next if param[:name].blank? \
             and param[:templates_attributes].flat_map(&:values).all?(&:blank?)
-          r = @group.template_categories.create(param)
+          r = @category.template_categories.create(param)
         end
         r.errors.full_messages
       end.flatten.compact
