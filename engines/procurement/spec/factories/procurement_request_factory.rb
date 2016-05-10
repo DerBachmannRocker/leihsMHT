@@ -5,11 +5,14 @@ FactoryGirl.define do
     # association :budget_period, factory: :procurement_budget_period
     budget_period do
       Procurement::BudgetPeriod.current ||
-                    FactoryGirl.create(:procurement_budget_period)
+          FactoryGirl.create(:procurement_budget_period)
     end
 
     # association :category, factory: :procurement_category
-    category { Procurement::Category.first || FactoryGirl.create(:procurement_category) }
+    category do
+      Procurement::Category.first ||
+          FactoryGirl.create(:procurement_category)
+    end
 
     article_name { Faker::Lorem.sentence }
     motivation { Faker::Lorem.sentence }

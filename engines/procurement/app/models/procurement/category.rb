@@ -11,7 +11,8 @@ module Procurement
     accepts_nested_attributes_for :budget_limits,
                                   allow_destroy: true
 
-    has_many :templates, -> { order(:article_name) }, dependent: :delete_all # only sub-categories
+    # only sub-categories
+    has_many :templates, -> { order(:article_name) }, dependent: :delete_all
     accepts_nested_attributes_for :templates,
                                   allow_destroy: true,
                                   reject_if: :all_blank
@@ -39,6 +40,7 @@ module Procurement
 
     default_scope { order(:name) }
 
+    scope :main, -> { where(parent_id: nil) }
     scope :leafs, -> { where.not(parent_id: nil) }
 
     ########################################################

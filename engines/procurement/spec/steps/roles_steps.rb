@@ -366,20 +366,20 @@ steps_for :roles do
 
   def prepare_request(requester: @current_user)
     @budget_period = FactoryGirl.create(:procurement_budget_period)
-    @group = FactoryGirl.create(:procurement_group)
+    @category = FactoryGirl.create(:procurement_category, :as_leaf)
     if requester == @current_user and not \
         Procurement::Access.requesters.find_by(user_id: @current_user.id)
       FactoryGirl.create :procurement_access, :requester, user: @current_user
     end
     @request = FactoryGirl.create(:procurement_request,
                                   user: requester,
-                                  group: @group,
+                                  category: @category,
                                   budget_period: @budget_period)
   end
 
   def go_to_request(user: @current_user)
-    visit procurement.group_budget_period_user_requests_path \
-      group_id: @group.id,
+    visit procurement.category_budget_period_user_requests_path \
+      category_id: @category,
       budget_period_id: @budget_period.id,
       user_id: user,
       request_id: @request.id

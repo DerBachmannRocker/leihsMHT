@@ -13,10 +13,10 @@
         - category.templates.each do |template|
           :ruby
             link = if controller.action_name == 'new'
-                      group_budget_period_user_requests_path(category.group_id,
-                                                             @budget_period,
-                                                             @user,
-                                                             template_id: template.id)
+                      category_budget_period_user_requests_path(category,
+                                                                @budget_period,
+                                                                @user,
+                                                                template_id: template.id)
                    else
                      '#'
                    end

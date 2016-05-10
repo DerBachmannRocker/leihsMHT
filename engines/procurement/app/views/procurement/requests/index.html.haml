@@ -19,8 +19,10 @@
           %h4
             %i.fa.fa-plus-circle
             = _('Add article')
+          -# FIXME
           - if @category.template_categories.exists?
             %hr
+            -# FIXME
             = render partial: 'procurement/templates/categories', locals: {template_categories: @category.template_categories}
 
       - i = 0
@@ -28,6 +30,7 @@
         = render partial: 'request', locals: {request: request}
 
       - if is_editable
+        -# FIXME
         - @category.template_categories.each do |template_category|
           - template_category.templates.where.not(id: @requests.map(&:template_id)).each do |template|
             - i += 1

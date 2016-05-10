@@ -218,8 +218,8 @@ steps_for :categories do
     expect(group_line).to have_content @group.name
   end
 
-  step 'there does not exist any procurement group yet' do
-    expect(Procurement::Group.exists?).to be false
+  step 'there does not exist any category yet' do
+    expect(Procurement::Category.exists?).to be false
   end
 
   step 'I leave the name empty' do

@@ -194,18 +194,19 @@ module FilterSteps
     end
   end
 
-  step 'only my groups are selected' do
-    my_groups, other_groups = Procurement::Group.all.partition do |group|
-      group.inspectable_by?(@current_user)
+  step 'only my categories are selected' do
+    my_categories, other_categories = \
+    Procurement::Category.leafs.partition do |category|
+      category.inspectable_by?(@current_user)
     end
     within '#filter_panel' do
-      within 'select[name="filter[group_ids][]"]', visible: false do
-        my_groups.each do |group|
-          expect(find "option[value='#{group.id}']", visible: false).to \
+      within 'select[name="filter[category_ids][]"]', visible: false do
+        my_categories.each do |category|
+          expect(find "option[value='#{category.id}']", visible: false).to \
             be_selected
         end
-        other_groups.each do |group|
-          expect(find "option[value='#{group.id}']", visible: false).not_to \
+        other_categories.each do |category|
+          expect(find "option[value='#{category.id}']", visible: false).not_to \
             be_selected
         end
       end

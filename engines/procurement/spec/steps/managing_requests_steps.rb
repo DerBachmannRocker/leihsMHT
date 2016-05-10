@@ -16,15 +16,12 @@ steps_for :managing_requests do
   end
 
   step 'a request containing a template article exists' do
-    template_category = FactoryGirl.create :procurement_template_category,
-                                           group: @group
-    @template = FactoryGirl.create :procurement_template,
-                                   template_category: template_category
+    category = FactoryGirl.create :procurement_category, :as_leaf
+    @template = FactoryGirl.create :procurement_template, category: category
     @request = FactoryGirl.create :procurement_request,
                                   user: @current_user,
-                                  group: @group,
+                                  category: category,
                                   template: @template
-
   end
 
   step 'all fields turn white' do
@@ -185,7 +182,7 @@ steps_for :managing_requests do
   step 'I click on the template article which has ' \
        'already been added to the request' do
     within '.sidebar-wrapper' do
-      find('.panel-heading', text: @request.template.template_category.name).click
+      find('.panel-heading', text: @request.template.category.name).click
       find('.list-group-item', text: @request.template.article_name).click
     end
   end
@@ -208,8 +205,8 @@ steps_for :managing_requests do
 
   step 'I do not see the budget limits' do
     within '.panel-success .panel-body' do
-      displayed_groups.each do |group|
-        within '.row', text: group.name do
+      displayed_categories.each do |category|
+        within '.row', text: category.name do
           expect(page).to have_no_selector '.budget_limit'
         end
       end
@@ -218,8 +215,8 @@ steps_for :managing_requests do
 
   step 'I do not see the percentage signs' do
     within '.panel-success .panel-body' do
-      displayed_groups.each do |group|
-        within '.row', text: group.name do
+      displayed_categories.each do |category|
+        within '.row', text: category.name do
           expect(page).to have_no_selector '.progress-radial'
         end
       end

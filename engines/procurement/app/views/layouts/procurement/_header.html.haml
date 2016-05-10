@@ -61,11 +61,11 @@
                 = _('Templates')
                 %i.caret
               %ul.dropdown-menu
-                - inspectable_categories.each do |group|
+                - inspectable_categories.each do |category|
                   %li
-                    %a{href: group_templates_path(group)}
+                    %a{href: category_templates_path(category)}
                       %i.fa.fa-shopping-cart
-                      = group
+                      = category
 
         %ul.nav.navbar-nav.navbar-right
           = render partial: 'layouts/procurement/navigation'

@@ -350,21 +350,21 @@ module CommonSteps
 
   step 'I see the requested amount per budget period' do
     requests = Procurement::BudgetPeriod.current.requests
-                .where(group_id: displayed_groups)
+                .where(category_id: displayed_categories)
     requests = requests.where(user_id: @current_user) if filtered_own_requests?
     total = requests.map { |r| r.total_price(@current_user) }.sum
     find '.panel-success > .panel-heading .label-primary.big_total_price',
          text: number_with_delimiter(total.to_i)
   end
 
-  step 'I see the requested amount per group of each budget period' do
-    displayed_groups.each do |group|
+  step 'I see the requested amount per category of each budget period' do
+    displayed_categories.each do |category|
       requests = Procurement::BudgetPeriod.current.requests
-                     .where(group_id: group)
+                     .where(category_id: category)
       requests = requests.where(user_id: @current_user) if filtered_own_requests?
       total = requests.map { |r| r.total_price(@current_user) }.sum
       within '.panel-success .panel-body' do
-        within '.row', text: group.name do
+        within '.row', text: category.name do
           find '.label-primary.big_total_price',
                text: number_with_delimiter(total.to_i)
         end
@@ -560,9 +560,10 @@ module CommonSteps
   end
 
   def visit_request(request)
-    visit procurement.group_budget_period_user_requests_path(request.group,
-                                                             request.budget_period,
-                                                             request.user)
+    visit \
+      procurement.category_budget_period_user_requests_path(request.category,
+                                                            request.budget_period,
+                                                            request.user)
   end
 
   def travel_to_date(datetime = nil)
@@ -625,8 +626,8 @@ module CommonSteps
 
   private
 
-  def displayed_groups
-    Procurement::Group.where(name: all('div.row .h4', minimum: 0).map(&:text))
+  def displayed_categories
+    Procurement::Category.where(name: all('div.row .h4', minimum: 0).map(&:text))
   end
 
   def filtered_own_requests?

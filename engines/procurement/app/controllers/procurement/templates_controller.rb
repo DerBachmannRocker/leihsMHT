@@ -12,6 +12,7 @@ module Procurement
     end
 
     def index
+      # FIXME
       @template_categories = @category.template_categories
     end
 
@@ -42,6 +43,7 @@ module Procurement
         else
           next if param[:name].blank? \
             and param[:templates_attributes].flat_map(&:values).all?(&:blank?)
+          # FIXME
           r = @category.template_categories.create(param)
         end
         r.errors.full_messages

@@ -20,8 +20,8 @@ module NavigationSteps
 
     # NOTE instead this matches the query params
     expect(page).to have_current_path \
-      procurement.group_budget_period_user_requests_path(
-        @group,
+      procurement.category_budget_period_user_requests_path(
+        @category,
         Procurement::BudgetPeriod.current,
         @user,
         request_id: :new_request)
@@ -42,8 +42,8 @@ module NavigationSteps
 
   step 'I am navigated to the template request form of the specific group' do
     expect(page).to have_current_path \
-      procurement.group_budget_period_user_requests_path(
-        @template.template_category.group,
+      procurement.category_budget_period_user_requests_path(
+        @template.category,
         Procurement::BudgetPeriod.current,
         @current_user,
         template_id: @template.id)
@@ -69,8 +69,8 @@ module NavigationSteps
 
   step 'I am on the new request form of a group' do
     @group ||= Procurement::Group.first.name
-    visit procurement.group_budget_period_user_requests_path(
-      @group,
+    visit procurement.category_budget_period_user_requests_path(
+      @category,
       Procurement::BudgetPeriod.current,
       @current_user)
   end
@@ -96,8 +96,8 @@ module NavigationSteps
            else
                User.find_by(firstname: name)
            end
-    path = procurement.group_budget_period_user_requests_path(
-      @group,
+    path = procurement.category_budget_period_user_requests_path(
+      @category,
       Procurement::BudgetPeriod.current,
       user)
     visit path

@@ -52,7 +52,8 @@ module Procurement
       end
     end
 
-    validates_presence_of :user, :category, :organization, :article_name, :motivation
+    validates_presence_of :user, :category, :organization,
+                          :article_name, :motivation
     validates_presence_of :inspection_comment, if: :not_completely_approved?
     validates :requested_quantity,
               presence: true,

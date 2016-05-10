@@ -225,9 +225,10 @@ Feature: section Managing Requests
     When I navigate to the requests form of myself
     And I click on the template article which has already been added to the request
     Then I am navigated to the request containing this template article
+    # for Barbara this doesn't work does it? More than one request can contain the same template article
     Examples:
       | username |
-      | Barbara  | #for barbara this doesn't work does it? More than one request can contain the same template article
+      | Barbara  |
       | Roger    |
 
   @managing_requests

@@ -30,7 +30,8 @@ module Procurement
         Procurement::BudgetPeriod.order(end_date: :desc) \
           .find(@filter['budget_period_ids']).each do |budget_period|
 
-          k = { category_id: @filter['category_ids'], priority: @filter['priorities'] }
+          k = { category_id: @filter['category_ids'],
+                priority: @filter['priorities'] }
           k[:user_id] = @user if @user
           requests = budget_period.requests.search(@filter['search']).where(k)
 
@@ -40,12 +41,10 @@ module Procurement
                                  'procurement_organizations.parent_id = :id',
                                    { id: @filter['organization_id'] }])
           end
-          requests = requests.select do |r|
-            @filter['states'].map(&:to_sym).include? r.state(current_user)
-          end
 
-          h[budget_period] = sort_requests(requests,
-                                           @filter['sort_by'], @filter['sort_dir'])
+          h[budget_period] = sort_requests(requests.select do |r|
+            @filter['states'].map(&:to_sym).include? r.state(current_user)
+          end, @filter['sort_by'], @filter['sort_dir'])
         end
         h
       end

@@ -12,9 +12,13 @@ module Procurement
         @user = current_user
       end
 
-      @category = Procurement::Category.find(params[:category_id]) if params[:category_id]
-      @budget_period = \
-        BudgetPeriod.find(params[:budget_period_id]) if params[:budget_period_id]
+      if params[:category_id]
+        @category = Procurement::Category.find(params[:category_id])
+      end
+
+      if params[:budget_period_id]
+        @budget_period = BudgetPeriod.find(params[:budget_period_id])
+      end
 
       unless RequestPolicy.new(current_user, request_user: @user).allowed?
         raise Pundit::NotAuthorizedError

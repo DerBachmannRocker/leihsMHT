@@ -48,10 +48,10 @@ steps_for :inspection do
     end
   end
 
-  step 'I see the budget limits of all groups' do
+  step 'I see the budget limits of all categories' do
     within '.panel-success .panel-body' do
-      displayed_groups.each do |group|
-        within '.row', text: group.name do
+      displayed_categories.each do |category|
+        within '.row', text: category.name do
           amount = \
             group.budget_limits \
               .find_by(budget_period_id: Procurement::BudgetPeriod.current)
@@ -66,14 +66,14 @@ steps_for :inspection do
   step 'I see the percentage of budget used ' \
        'compared to the budget limit of my group' do
     within '.panel-success .panel-body' do
-      displayed_groups.each do |group|
-        within '.row', text: group.name do
+      displayed_categories.each do |category|
+        within '.row', text: category.name do
           amount = \
-            group.budget_limits \
+            category.budget_limits \
               .find_by(budget_period_id: Procurement::BudgetPeriod.current)
               .try(:amount).to_i
           used = Procurement::BudgetPeriod.current.requests
-                     .where(group_id: group)
+                     .where(category_id: category)
                      .map { |r| r.total_price(@current_user) }.sum.to_i
           percentage = if amount > 0
                          used * 100 / amount
@@ -91,7 +91,7 @@ steps_for :inspection do
 
   step 'I see the total of all ordered amounts of a budget period' do
     total = Procurement::BudgetPeriod.current.requests
-              .where(group_id: displayed_groups)
+              .where(category_id: displayed_categories)
               .map { |r| r.total_price(@current_user) }.sum
 
     find '.panel-success > .panel-heading .label-primary.big_total_price',
@@ -100,10 +100,10 @@ steps_for :inspection do
 
   step 'I see the total of all ordered amounts of each group' do
     within '.panel-success .panel-body' do
-      displayed_groups.each do |group|
-        within '.row', text: group.name do
+      displayed_categories.each do |category|
+        within '.row', text: category.name do
           total = Procurement::BudgetPeriod.current.requests
-                      .where(group_id: group)
+                      .where(category_id: category)
                       .map { |r| r.total_price(@current_user) }.sum
           find '.label-primary.big_total_price',
                text: number_with_delimiter(total.to_i)
@@ -112,21 +112,21 @@ steps_for :inspection do
     end
   end
 
-  step 'only my groups are shown' do
-    my_groups = Procurement::Group.all.select do |group|
-      group.inspectable_by?(@current_user)
+  step 'only my categories are shown' do
+    my_categories = Procurement::Category.leafs.select do |category|
+      category.inspectable_by?(@current_user)
     end
-    expect(displayed_groups).to eq my_groups
+    expect(displayed_categories).to eq my_categories
   end
 
-  step 'several requests exist for my groups' do
-    my_groups = Procurement::Group.all.select do |group|
-      group.inspectable_by?(@current_user)
+  step 'several requests exist for my categories' do
+    my_categories = Procurement::Category.leafs.select do |category|
+      category.inspectable_by?(@current_user)
     end
     n = 3
     n.times do
       FactoryGirl.create :procurement_request,
-                         group: my_groups.sample
+                         category: my_categories.sample
     end
     expect(Procurement::Request.count).to eq n
   end
