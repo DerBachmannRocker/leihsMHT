@@ -12,8 +12,7 @@ module Procurement
     end
 
     def index
-      # FIXME
-      @template_categories = @category.template_categories
+      @template_categories = Procurement::Category.leafs
     end
 
     def create

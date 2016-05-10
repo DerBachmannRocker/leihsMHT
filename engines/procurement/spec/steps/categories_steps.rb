@@ -182,23 +182,30 @@ steps_for :categories do
       .to eq 0
   end
 
-  step 'there exists a procurement group without any requests' do
-    @group = FactoryGirl.create(:procurement_group)
-    expect(@group.requests).to be_empty
+  step 'there exists a sub category without any requests' do
+    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    expect(@category.requests).to be_empty
   end
 
-  step 'I delete the group' do
-    group_line = find('table tbody tr', text: @group.name)
+  step 'I delete the main/sub category' do
+    group_line = find('table tbody tr', text: @category.name)
     group_line.find('.dropdown-toggle').click
-    accept_alert { group_line.click_on _('Delete') }
+    #accept_alert {
+      group_line.click_on _('Delete')
+    #}
   end
 
-  step 'the group disappears from the list' do
-    expect(find('table')).not_to have_content @group.name
+  step 'I am asked whether I really want to delete' do
+    alert = page.driver.browser.switch_to.alert
+    alert.accept
   end
 
-  step 'the group was successfully deleted from the database' do
-    expect { @group.reload }.to raise_error ActiveRecord::RecordNotFound
+  step 'the sub category disappears from the list' do
+    expect(find('table')).not_to have_content @category.name
+  end
+
+  step 'the sub category was successfully deleted from the database' do
+    expect { @category.reload }.to raise_error ActiveRecord::RecordNotFound
   end
 
   step 'the group line contains the name of the group' do

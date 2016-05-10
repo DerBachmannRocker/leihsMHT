@@ -213,24 +213,24 @@ steps_for :roles do
 
   step 'I can not create requests for another person' do
     @budget_period = FactoryGirl.create(:procurement_budget_period)
-    @group = FactoryGirl.create(:procurement_group)
+    @category = FactoryGirl.create(:procurement_category, :as_leaf)
     visit procurement.overview_requests_path
     expect(page).not_to have_selector "a[href*='users/choose']"
 
-    visit procurement.choose_group_budget_period_users_path \
-      group_id: @group.id,
+    visit procurement.choose_category_budget_period_users_path \
+      category_id: @category.id,
       budget_period_id: @budget_period.id
     expect(page).to have_content _('You are not authorized for this action.')
   end
 
   step 'I can not create a request for myself' do
     @budget_period = FactoryGirl.create(:procurement_budget_period)
-    @group = FactoryGirl.create(:procurement_group)
+    @category = FactoryGirl.create(:procurement_category, :as_leaf)
     visit procurement.overview_requests_path
     expect(page).not_to have_selector("a[href*='new_request']")
 
-    visit procurement.choose_group_budget_period_users_path \
-      group_id: @group.id,
+    visit procurement.choose_category_budget_period_users_path \
+      category_id: @category.id,
       budget_period_id: @budget_period.id
     expect(page).to have_content _('You are not authorized for this action.')
   end
@@ -306,32 +306,32 @@ steps_for :roles do
   end
 
   step 'I can create requests for my group for another person' do
-    @group = FactoryGirl.create(:procurement_group)
-    @group.inspectors << @current_user
+    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category.inspectors << @current_user
     @budget_period = FactoryGirl.create(:procurement_budget_period)
     visit procurement.overview_requests_path
     expect(page).to have_selector "a[href*='users/choose']"
 
-    visit procurement.choose_group_budget_period_users_path \
-      group_id: @group.id,
+    visit procurement.choose_category_budget_period_users_path \
+      category_id: @category.id,
       budget_period_id: @budget_period.id
     expect(page).not_to have_content _('You are not authorized for this action.')
   end
 
   step 'I can manage templates of my group' do
-    @group = FactoryGirl.create(:procurement_group)
-    @group.inspectors << @current_user
+    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category.inspectors << @current_user
     step 'I navigate to procurement'
     click_link _('Templates')
-    find('.dropdown li', text: @group.name).click
-    expect(current_path).to be == procurement.group_templates_path(@group)
+    find('.dropdown li', text: @category.name).click
+    expect(current_path).to be == procurement.category_templates_path(@category)
     expect(page).not_to have_content _('You are not authorized for this action.')
   end
 
   step 'I can see all budget limits' do
     prepare_request
     FactoryGirl.create(:procurement_budget_limit,
-                       group: @group,
+                       category: @category,
                        budget_period: @budget_period)
     visit procurement.overview_requests_path
     expect(page).to have_selector '.budget_limit'

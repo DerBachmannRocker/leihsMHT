@@ -29,8 +29,8 @@ module NavigationSteps
 
   step 'I am navigated to the requester list' do
     expect(current_path).to eq \
-      procurement.choose_group_budget_period_users_path(
-        @group,
+      procurement.choose_category_budget_period_users_path(
+        @category,
         Procurement::BudgetPeriod.current)
 
     within '.panel-success .list-group' do
@@ -116,7 +116,7 @@ module NavigationSteps
     expect(page).to have_selector('h1', text: _('Budget periods'))
   end
 
-  step 'I navigate to the groups page' do
+  step 'I navigate to the categories page' do
     if has_no_selector? '.navbar .navbar-right', text: _('Procurement')
       visit procurement.root_path
     end

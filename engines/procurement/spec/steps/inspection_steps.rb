@@ -30,10 +30,10 @@ steps_for :inspection do
     find 'button[disabled]', text: _('Save'), match: :first
   end
 
-  step 'I press on the Userplus icon of a group I am inspecting' do
+  step 'I press on the Userplus icon of a sub category I am inspecting' do
     within '#filter_target' do
       within '.panel-success .panel-body' do
-        within '.row .h4', text: @group.name do
+        within '.row .h4', text: @category.name do
           find('.fa-user-plus').click
         end
       end

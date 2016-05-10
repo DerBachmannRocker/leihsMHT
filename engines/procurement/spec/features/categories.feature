@@ -62,12 +62,10 @@ Feature: Procurement Categories
   @categories
   Scenario: Deleting a main category
     Given I am Hans Ueli
-    And there exists a category without any requests
-    And there exists a sub category
-    When I navigate to the category page
+    And there exists a sub category without any requests
+    When I navigate to the categories page
     And I delete the main category
-    Then I am asked if I really want to delete the category
-    When I say yes
+    Then I am asked whether I really want to delete
     Then the main and the sub categories disappear from the list
     And the categories were successfully deleted from the database
 
@@ -75,10 +73,9 @@ Feature: Procurement Categories
   Scenario: Deleting a sub category
     Given I am Hans Ueli
     And there exists a sub category without any requests
-    When I navigate to the category page
+    When I navigate to the categories page
     And I delete the sub category
-    Then I am asked if I really want to delete the category
-    When I say yes
+    Then I am asked whether I really want to delete
     Then the sub category disappears from the list
     And the category is successfully deleted from the database
 
@@ -87,7 +84,7 @@ Feature: Procurement Categories
     Given I am Hans Ueli
     And 3 main categories exist
     And each main category has two sub categories
-    And I navigate to the category page
+    And I navigate to the categories page
     Then the main categories are sorted 0-10 and a-z
     And the sub categories are sorted 0-10 and a-z
 
@@ -95,7 +92,7 @@ Feature: Procurement Categories
   Scenario: Overview of the categories
     Given I am Hans Ueli
     And there exists a category
-    When I navigate to the category page
+    When I navigate to the categories page
     Then the category line contains the name of the category
     And the sub category line contains the name of the category
     And the sub category line contains the names of the inspectors
@@ -105,7 +102,7 @@ Feature: Procurement Categories
     Given I am Hans Ueli
     And there does not exist any category yet
     And a current budget period exists
-    When I navigate to the category page
+    When I navigate to the categories page
     And I click on the add button
     And I click on save
     Then the name field is marked red
@@ -117,7 +114,7 @@ Feature: Procurement Categories
     Given I am Hans Ueli
     And there does not exist any category yet
     And there exist 1 user to become the inspector
-    When I navigate to the category page
+    When I navigate to the categories page
     And I click on the add button
     And I start typing the name of the category
     Then the inspector field turns red

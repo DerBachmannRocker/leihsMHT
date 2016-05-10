@@ -534,7 +534,7 @@ module CommonSteps
     if price = @changes.delete(:price)
       @changes[:price_cents] = price * 100
     end
-    expect(@group.requests.where(user_id: user).find_by(@changes)).to be
+    expect(@category.requests.where(user_id: user).find_by(@changes)).to be
   end
 
   step 'the status is set to :state' do |state|

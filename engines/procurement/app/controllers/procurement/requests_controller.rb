@@ -59,8 +59,7 @@ module Procurement
 
     def new
       authorize @budget_period, :not_past?
-      @template_categories = TemplateCategory.all
-      @categories = Procurement::Category.leafs
+      @template_categories = Procurement::Category.leafs
     end
 
     def create
