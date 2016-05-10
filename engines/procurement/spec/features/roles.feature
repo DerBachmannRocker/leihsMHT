@@ -81,7 +81,7 @@ Feature: Description of roles
     And the basic dataset is ready
     And I navigate to procurement
     Then I can create a budget period
-    And I can create a group
+    And I can create a category
     And I can add requesters
     And I can add admins
     And I can read only the request of someone else

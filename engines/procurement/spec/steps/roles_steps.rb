@@ -342,9 +342,9 @@ steps_for :roles do
     expect(page).to have_selector 'form .fa-plus-circle'
   end
 
-  step 'I can create a group' do
-    step 'I navigate to the groups page'
-    expect(page).to have_selector "a[href='#{procurement.new_group_path}']"
+  step 'I can create a category' do
+    step 'I navigate to the categories page'
+    expect(page).to have_selector "a[href='#{procurement.new_category_path}']"
   end
 
   step 'I can read only the request of someone else' do

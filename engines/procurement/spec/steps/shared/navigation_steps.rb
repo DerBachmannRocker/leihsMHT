@@ -160,7 +160,7 @@ module NavigationSteps
 
     within '.navbar' do
       click_on _('Templates')
-      click_on @group.name
+      click_on @category.name
     end
     expect(page).to have_selector('h1', text: _('Templates'))
   end

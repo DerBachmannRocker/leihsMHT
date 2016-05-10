@@ -10,8 +10,7 @@ steps_for :templates do
   include PersonasSteps
 
   step 'a template category exists' do
-    @category = FactoryGirl.create :procurement_template_category,
-                                   group: @group
+    @category = FactoryGirl.create :procurement_category, :as_leaf
   end
 
   step 'I delete an article from the category' do

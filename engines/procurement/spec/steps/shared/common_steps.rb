@@ -287,11 +287,11 @@ module CommonSteps
     step 'I move a request to the other group'
   end
 
-  step 'I press on the plus icon of a group' do
-    @group ||= Procurement::Group.first.name
+  step 'I press on the plus icon of a sub category' do
+    @category ||= Procurement::Category.first.name
     within '#filter_target' do
       within '.panel-success .panel-body' do
-        within '.row .h4', text: @group.name do
+        within '.row .h4', text: @category.name do
           find('i.fa-plus-circle').click
         end
       end
@@ -396,7 +396,7 @@ module CommonSteps
 
   step 'I want to create a new request' do
     step 'I navigate to the requests overview page'
-    step 'I press on the plus icon of a group'
+    step 'I press on the plus icon of a sub category'
   end
 
   step ':count groups exist' do |count|
@@ -455,10 +455,8 @@ module CommonSteps
   end
 
   step 'several template categories exist' do
-    h = {}
-    h[:group] = @group if @group
     3.times do
-      FactoryGirl.create :procurement_template_category, h
+      FactoryGirl.create :procurement_category, :as_leaf
     end
   end
 

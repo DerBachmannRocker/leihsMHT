@@ -224,7 +224,7 @@ steps_for :periods_and_states do
   step 'I see the state :state' do |state|
     step 'I navigate to the requests overview page'
     step 'I select all budget periods'
-    step 'I select all groups'
+    step 'I select all categories'
     step 'page has been loaded'
     @el = find(".list-group-item[data-request_id='#{@request.id}']")
     @el.find('.label', text: _(state))
