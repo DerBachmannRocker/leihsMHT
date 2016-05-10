@@ -131,11 +131,11 @@ steps_for :inspection do
     expect(Procurement::Request.count).to eq n
   end
 
-  #step 'templates exist' do
+  # step 'templates exist' do
   #  3.times do
   #    FactoryGirl.create :procurement_category, :with_templates
   #  end
-  #end
+  # end
 
   step 'the "Approved quantity" is copied to the field "Order quantity"' do
     expect(find("input[name*='[order_quantity]']").value).to eq \

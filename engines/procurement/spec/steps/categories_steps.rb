@@ -190,9 +190,8 @@ steps_for :categories do
   step 'I delete the main/sub category' do
     group_line = find('table tbody tr', text: @category.name)
     group_line.find('.dropdown-toggle').click
-    #accept_alert {
-      group_line.click_on _('Delete')
-    #}
+    # accept_alert { }
+    group_line.click_on _('Delete')
   end
 
   step 'I am asked whether I really want to delete' do
