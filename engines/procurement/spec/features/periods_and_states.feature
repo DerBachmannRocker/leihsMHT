@@ -147,7 +147,7 @@ Feature: Periods and states
     And I can not modify any request for the budget period which has ended
     And I can not delete any requests for the budget period which has ended
     And I can not move a request of a budget period which has ended to another budget period
-    And I can not move a request of a budget period which has ended to another procurement group
+    And I can not move a request of a budget period which has ended to another category
     Examples:
       | username  |
       | Barbara   |
