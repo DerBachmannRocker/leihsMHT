@@ -74,7 +74,7 @@ module Procurement
     end
 
     def move
-      @request = Request.where(user_id: @user, group_id: @category,
+      @request = Request.where(user_id: @user, category_id: @category,
                                budget_period_id: @budget_period).find(params[:id])
       h = { inspection_comment: nil, approved_quantity: nil, order_quantity: nil }
       if params[:to_category_id]
@@ -92,7 +92,7 @@ module Procurement
     end
 
     def destroy
-      request = Request.where(user_id: @user, group_id: @category,
+      request = Request.where(user_id: @user, category_id: @category,
                               budget_period_id: @budget_period).find(params[:id])
       request.destroy
       if request.destroyed?

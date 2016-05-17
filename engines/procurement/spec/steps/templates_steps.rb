@@ -9,7 +9,7 @@ steps_for :templates do
   include NavigationSteps
   include PersonasSteps
 
-  step 'a template category exists' do
+  step 'a category exists' do
     @category = FactoryGirl.create :procurement_category, :as_leaf
   end
 
@@ -22,7 +22,7 @@ steps_for :templates do
     end
   end
 
-  step 'I delete the template category' do
+  step 'I delete the category' do
     within(:xpath, "//input[@value='#{@category.name}']/ancestor::" \
                    "div[contains(@class, 'panel-heading')]") do
       find('i.fa-minus-circle').click
@@ -117,7 +117,7 @@ steps_for :templates do
     expect(@template.supplier).to be_nil
   end
 
-  step 'the deleted template category is deleted from the database' do
+  step 'the deleted category is deleted from the database' do
     expect { @category.reload }.to raise_error ActiveRecord::RecordNotFound
   end
 
@@ -152,13 +152,13 @@ steps_for :templates do
     expect(@template.requests).to be_empty
   end
 
-  step 'the template category has one article' do
+  step 'the category has one template article' do
     @template = FactoryGirl.create(:procurement_template)
     @category.templates << @template
     expect(@category.templates.count).to eq 1
   end
 
-  step 'the template category is marked red' do
+  step 'the category is marked red' do
     find ".panel-danger .panel-heading input[value='#{@category.name}']"
   end
 
