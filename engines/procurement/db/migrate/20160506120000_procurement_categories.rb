@@ -17,12 +17,6 @@ class ProcurementCategories < ActiveRecord::Migration
     end
 
 
-    change_table :procurement_templates do |t|
-      t.belongs_to :category, null: false
-    end
-    add_foreign_key(:procurement_templates, :procurement_categories, column: 'category_id')
-
-
     drop_table :procurement_group_inspectors
     create_table :procurement_category_inspectors do |t|
       t.belongs_to :user, null: false, foreign_key: true
@@ -53,6 +47,14 @@ class ProcurementCategories < ActiveRecord::Migration
     Procurement::Request.update_all(category_id: sub_cat)
     change_column_null :procurement_requests, :category_id, false
     add_foreign_key(:procurement_requests, :procurement_categories, column: 'category_id')
+
+
+    change_table :procurement_templates do |t|
+      t.belongs_to :category, null: false
+    end
+    Procurement::Template.update_all(category_id: sub_cat)
+    add_foreign_key(:procurement_templates, :procurement_categories, column: 'category_id')
+
 
     drop_table :procurement_groups
 
