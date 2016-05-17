@@ -12,7 +12,6 @@ module Procurement
     end
 
     def index
-      @template_categories = Procurement::Category.leafs
     end
 
     def create
@@ -29,24 +28,27 @@ module Procurement
     private
 
     def create_or_update_or_destroy
-      params.require(:template_categories).values.map do |param|
-        if param[:id]
-          # FIXME
-          r = @category.template_categories.find(param[:id])
-          if param.delete(:_destroy) == '1' or (param[:name].blank? \
-            and param[:templates_attributes].flat_map(&:values).all?(&:blank?))
-            r.destroy
-          else
-            r.update_attributes(param)
-          end
-        else
-          next if param[:name].blank? \
-            and param[:templates_attributes].flat_map(&:values).all?(&:blank?)
-          # FIXME
-          r = @category.template_categories.create(param)
-        end
-        r.errors.full_messages
-      end.flatten.compact
+      #old#
+      # params.require(:templates).values.map do |param|
+      #   if param[:id]
+      #     r = @category.templates.find(param[:id])
+      #     if param.delete(:_destroy) == '1' or (param[:name].blank? \
+      #       and param[:templates_attributes].flat_map(&:values).all?(&:blank?))
+      #       r.destroy
+      #     else
+      #       r.update_attributes(param)
+      #     end
+      #   else
+      #     next if param[:name].blank? \
+      #       and param[:templates_attributes].flat_map(&:values).all?(&:blank?)
+      #     r = @category.templates.create(param)
+      #   end
+      #   r.errors.full_messages
+      # end.flatten.compact
+
+      @category.update_attributes(templates_attributes: \
+                                  params.require(:templates_attributes))
+      @category.errors.full_messages
     end
 
   end

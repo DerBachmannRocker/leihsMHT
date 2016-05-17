@@ -20,7 +20,7 @@
             %i.fa.fa-plus-circle
             = _('Add article')
           %hr
-          = render partial: 'procurement/templates/categories', locals: {template_categories: [@category]}
+          = render partial: 'procurement/templates/categories', locals: {categories: [@category]}
 
       - i = 0
       - @requests.each do |request|

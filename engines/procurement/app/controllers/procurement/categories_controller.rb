@@ -12,45 +12,42 @@ module Procurement
         params[:category][:inspector_ids].split(',').map &:to_i
     end
 
-    before_action only: [:edit, :update, :destroy] do
-      @category = Category.find(params[:id])
-    end
-
     def index
-      @categories = Category.all
+      @categories = Category.main
       respond_to do |format|
         format.html
         format.json { render json: @categories }
       end
     end
 
-    def new
-      @category = Category.new
-      render :edit
-    end
-
     def create
-      @category = Category.create(params[:category])
-      if @category.valid?
-        redirect_to categories_path
+      errors = create_or_update_or_destroy
+
+      if errors.empty?
+        flash[:success] = _('Saved')
+        head status: :ok
       else
-        flash.now[:error] = @category.errors.full_messages
-        render :edit
+        render json: errors, status: :internal_server_error
       end
     end
 
-    def edit
-    end
+    private
 
-    def update
-      @category.update_attributes(params[:category])
-      flash[:success] = _('Saved')
-      redirect_to categories_path
-    end
-
-    def destroy
-      @category.destroy
-      redirect_to categories_path
+    def create_or_update_or_destroy
+      params.require(:categories).values.map do |param|
+        if param[:id]
+          r = Procurement::Category.find(param[:id])
+          if param.delete(:_destroy) == '1' or param[:name].blank?
+            r.destroy
+          else
+            r.update_attributes(param)
+          end
+        else
+          next if param[:name].blank?
+          r = Procurement::Category.create(param)
+        end
+        r.errors.full_messages
+      end.flatten.compact
     end
 
   end

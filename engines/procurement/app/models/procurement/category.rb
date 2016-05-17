@@ -3,7 +3,9 @@ module Procurement
 
     # only sub-categories
     has_many :category_inspectors, dependent: :delete_all
-    has_many :inspectors, through: :category_inspectors, source: :user
+    has_many :inspectors, -> { order('firstname, lastname') },
+             through: :category_inspectors,
+             source: :user
     has_many :requests, dependent: :restrict_with_exception
 
     # only main-categories
@@ -18,10 +20,25 @@ module Procurement
                                   reject_if: :all_blank
 
     belongs_to :parent, class_name: 'Category'
-    has_many :children, class_name: 'Category'
+    has_many :children, class_name: 'Category',
+                        foreign_key: :parent_id,
+                        dependent: :restrict_with_exception
+    accepts_nested_attributes_for :children,
+                                  allow_destroy: true,
+                                  reject_if: :all_blank
+
     validate do
-      if parent and parent.parent
-        errors.add :base, _('The parent category should be a main category')
+      if parent
+        if parent.parent
+          errors.add :base, _('The parent category should be a main category')
+        end
+        if budget_limits.exists?
+          errors.add :base, _('A sub category cannot have budget limits')
+        end
+      else
+        if inspectors.exists?
+          errors.add :base, _('A main category cannot have inspectors')
+        end
       end
     end
 
