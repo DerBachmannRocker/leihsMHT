@@ -16,7 +16,7 @@ Feature: Templates
   @templates
   Scenario: Create a Template Article
     Given I am Barbara
-    And a template category exists
+    And a category exists
     When I navigate to the templates page
     And I edit the category
     And the following fields are filled
@@ -31,20 +31,20 @@ Feature: Templates
   @templates
   Scenario: Deleting a Template Category
     Given I am Barbara
-    And a template category exists
-    And the template category contains articles
+    And a category exists
+    And the category contains template articles
     When I navigate to the templates page
-    And I delete the template category
-    Then the template category is marked red
+    And I delete the category
+    Then the category is marked red
     When I click on save
     Then I see a success message
-    And the deleted template category is deleted from the database
+    And the deleted category is deleted from the database
 
   @templates
   Scenario: Deleting an Article
     Given I am Barbara
-    And a template category exists
-    And the template category contains articles
+    And a category exists
+    And the category contains template articles
     When I navigate to the templates page
     And I edit the category
     And I delete an article from the category
@@ -56,8 +56,8 @@ Feature: Templates
   @templates
   Scenario: Editing a Template
     Given I am Barbara
-    And a template category exists
-    And the template category has one article
+    And a category exists
+    And the category has one template article
     When I navigate to the templates page
     And I edit the category
     And I modify the category name
@@ -73,8 +73,8 @@ Feature: Templates
   @templates
   Scenario: Deleting information of some fields of an article
     Given I am Barbara
-    And a template category exists
-    And the template category has one article
+    And a category exists
+    And the category has one template article
     When I navigate to the templates page
     And I edit the category
     And the following fields are filled
@@ -93,7 +93,7 @@ Feature: Templates
   @templates
   Scenario: Sorting of categories and articles
     Given I am Barbara
-    And several template categories exist
+    And several categories exist
     And several template articles in categories exist
     When I navigate to the templates page
     Then the categories are sorted 0-10 and a-z
@@ -102,8 +102,8 @@ Feature: Templates
   @templates
   Scenario: Nullify id in request when articlename and article nr./supplier nr. have been changed
     Given I am Barbara
-    And a template category exists
-    And the template category has one article
+    And a category exists
+    And the category has one template article
     And the template is already used in many requests
     When I navigate to the templates page
     And I edit the category

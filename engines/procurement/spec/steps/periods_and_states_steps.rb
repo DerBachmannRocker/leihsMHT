@@ -132,18 +132,18 @@ steps_for :periods_and_states do
   end
 
   step 'I can not move a request of a budget period ' \
-       'which has ended to another procurement group' do
+       'which has ended to another category' do
     request = Procurement::BudgetPeriod.all
                   .detect { |bp| bp.past? and bp.requests.exists? }
                   .requests.first
     visit_request(request)
-    group = Procurement::Group.where.not(id: request.group).first
+    category = Procurement::Category.leafs.where.not(id: request.category).first
 
     expect(page).to have_no_selector '.btn-group .fa-gear'
 
-    request.update_attributes group: group
+    request.update_attributes category: category
     expect(request).to_not be_valid
-    expect(request.reload.group).to_not be group
+    expect(request.reload.category).to_not be category
   end
 
   step 'I can not save the data' do

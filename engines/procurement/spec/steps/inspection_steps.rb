@@ -112,17 +112,17 @@ steps_for :inspection do
     end
   end
 
-  step 'only my categories are shown' do
-    my_categories = Procurement::Category.leafs.select do |category|
+  def my_categories
+    Procurement::Category.leafs.select do |category|
       category.inspectable_by?(@current_user)
     end
+  end
+
+  step 'only my categories are shown' do
     expect(displayed_categories).to eq my_categories
   end
 
   step 'several requests exist for my categories' do
-    my_categories = Procurement::Category.leafs.select do |category|
-      category.inspectable_by?(@current_user)
-    end
     n = 3
     n.times do
       FactoryGirl.create :procurement_request,
@@ -131,11 +131,13 @@ steps_for :inspection do
     expect(Procurement::Request.count).to eq n
   end
 
-  # step 'templates exist' do
-  #  3.times do
-  #    FactoryGirl.create :procurement_category, :with_templates
-  #  end
-  # end
+  step 'templates for my categories exist' do
+    my_categories.each do |category|
+      3.times do
+        FactoryGirl.create :procurement_template, category: category
+      end
+    end
+  end
 
   step 'the "Approved quantity" is copied to the field "Order quantity"' do
     expect(find("input[name*='[order_quantity]']").value).to eq \

@@ -130,6 +130,16 @@ tasks:
     test:
       body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/examples/inventarhelfer.feature:25
         DEFAULT_BROWSER=firefox
+- name: features/examples/kalender.feature:13
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/examples/kalender.feature:13
+        DEFAULT_BROWSER=firefox
+- name: features/examples/kalender.feature:20
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/examples/kalender.feature:20
+        DEFAULT_BROWSER=firefox
 - name: features/examples/kategorien.feature:59
   scripts:
     test:
@@ -169,6 +179,16 @@ tasks:
   scripts:
     test:
       body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/examples/probleme.feature:19
+        DEFAULT_BROWSER=firefox
+- name: features/examples/probleme.feature:33
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/examples/probleme.feature:33
+        DEFAULT_BROWSER=firefox
+- name: features/examples/probleme.feature:54
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/examples/probleme.feature:54
         DEFAULT_BROWSER=firefox
 - name: features/examples/probleme.feature:74
   scripts:
@@ -295,6 +315,11 @@ tasks:
     test:
       body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/delegation.feature:195
         DEFAULT_BROWSER=firefox
+- name: features/manage/delegation.feature:211
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/delegation.feature:211
+        DEFAULT_BROWSER=firefox
 - name: features/manage/delegation.feature:248
   scripts:
     test:
@@ -309,6 +334,11 @@ tasks:
   scripts:
     test:
       body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/delegation_mail.feature:23
+        DEFAULT_BROWSER=firefox
+- name: features/manage/hand_over/add.feature:39
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/hand_over/add.feature:39
         DEFAULT_BROWSER=firefox
 - name: features/manage/hand_over/delete.feature:11
   scripts:
@@ -335,6 +365,11 @@ tasks:
     test:
       body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/lending/lending.feature:68
         DEFAULT_BROWSER=firefox
+- name: features/manage/lending/lending.feature:78
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/lending/lending.feature:78
+        DEFAULT_BROWSER=firefox
 - name: features/manage/lending/lending.feature:121
   scripts:
     test:
@@ -344,6 +379,11 @@ tasks:
   scripts:
     test:
       body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/lending/lending.feature:168
+        DEFAULT_BROWSER=firefox
+- name: features/manage/take_back/edit_take_back_end_date.feature:18
+  scripts:
+    test:
+      body: DISPLAY=":$XVNC_PORT" bundle exec cucumber -p default  --strict features/manage/take_back/edit_take_back_end_date.feature:18
         DEFAULT_BROWSER=firefox
 - name: features/manage/verification.feature:8
   scripts:

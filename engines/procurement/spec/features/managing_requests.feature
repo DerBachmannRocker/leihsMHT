@@ -100,7 +100,7 @@ Feature: section Managing Requests
   @managing_requests
   Scenario Outline: Creating a request through a budget period selecting a template article
     Given I am <username>
-    And several template categories exist
+    And several categories exist
     And several template articles in categories exist
     When I navigate to the requests overview page
     And I press on the plus icon of the budget period
@@ -164,7 +164,7 @@ Feature: section Managing Requests
   #@managing_requests
   #Scenario: Creating a request from a group template inside the new request page as inspector
   #  Given I am Barbara
-  #  And several template categories exist
+  #  And several categories exist
   #  And several template articles in categories exist
   #  And each template article contains
   #    | Article nr. / Producer nr. |
@@ -193,7 +193,7 @@ Feature: section Managing Requests
   # @managing_requests
   #Scenario: Creating a request from a group template inside the new request page as requester
   #  Given I am Roger
-  #  And several template categories exist
+  #  And several categories exist
   #  And several template articles in categories exist
   #  And each template article contains
   #    | Article nr. / Producer nr. |

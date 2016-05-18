@@ -7,7 +7,7 @@ module CommonSteps
 
   step 'a request with following data exist' do |table|
     @changes = {
-      group: @group
+      category: @category
     }
     table.hashes.each do |hash|
       hash['value'] = nil if hash['value'] == 'random'
@@ -454,16 +454,16 @@ module CommonSteps
     expect(requests.count).to eq n
   end
 
-  step 'several template categories exist' do
+  step 'several categories exist' do
     3.times do
       FactoryGirl.create :procurement_category, :as_leaf
     end
   end
 
   step 'several template articles in categories exist' do
-    Procurement::TemplateCategory.all.each do |category|
+    Procurement::Category.leafs.each do |category|
       @category = category
-      step 'the template category contains articles'
+      step 'the category contains template articles'
     end
   end
 
@@ -541,10 +541,9 @@ module CommonSteps
     end
   end
 
-  step 'the template category contains articles' do
+  step 'the category contains template articles' do
     3.times do
-      FactoryGirl.create :procurement_template,
-                         template_category: @category
+      FactoryGirl.create :procurement_template, category: @category
     end
   end
 
