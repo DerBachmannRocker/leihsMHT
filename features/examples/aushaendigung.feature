@@ -50,6 +50,7 @@ Feature: Edit a hand over
     Then I see the error message 'XY is already assigned to this contract'
     And the line remains selected
     And the line remains highlighted in green
+    And no new line for this model is added ##115586303
 
   @javascript @personas
   Scenario: Default contract note
