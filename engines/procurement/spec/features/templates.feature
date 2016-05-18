@@ -5,7 +5,7 @@ Feature: Templates
 
   @templates
   Scenario: Create a Template Category
-    Given I am Barbara
+    Given I am Hans Ueli
     When I navigate to the templates page
     Then there is an empty category line for creating a new category
     When I enter the category name

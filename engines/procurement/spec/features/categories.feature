@@ -11,23 +11,24 @@ Feature: Procurement Categories
     And I fill in the budget limit for the current budget period
     And I fill in the budget limit for the upcoming budget period
     And I click on save
-    Then I am redirected to the category index page
+    Then I see a success message
+    And I stay on the main categories edit page
     And the new category appears in the list
     And the new category was created in the database
 
   @categories
   Scenario: Creating the sub categories
     Given I am Hans Ueli
-    And a category exists
+    And a main category exists
     And there exists 2 users to become the inspectors
     When I navigate to the categories edit page
     And I click on the add sub category button
     And I fill in the sub category name
     And I fill in the inspectors' names
     And I click on save
-    Then I am redirected to the category index page
-    And the new sub category appears in the list
-    And the new sub category was created in the database
+    Then I see a success message
+    And I stay on the main categories edit page
+    And the new sub category with its inspectors was created in the database
 
   @categories
   Scenario: Editing a main category
@@ -41,8 +42,8 @@ Feature: Procurement Categories
     And I add a budget limit
     And I modify a budget limit
     And I click on save
-    Then I am redirected to the category index page
-    And I see a success message
+    Then I see a success message
+    And I stay on the main categories edit page
     And all the information of the category was successfully updated in the database
 
   @categories
@@ -51,12 +52,12 @@ Feature: Procurement Categories
     And a sub category exists
     And the sub category has an inspector
     When I navigate to the categories edit page
-    And I modify the name
+    And I modify the name of the sub category
     And I delete the inspector
     And I add another inspector
     And I click on save
-    Then I am redirected to the category index page
-    And I see a success message
+    Then I see a success message
+    And I stay on the main categories edit page
     And all the information of the category was successfully updated in the database
 
   @categories
@@ -65,19 +66,41 @@ Feature: Procurement Categories
     And there exists a sub category without any requests
     When I navigate to the categories page
     And I delete the main category
-    Then I am asked whether I really want to delete
+    Then I am asked whether I really want to delete the main and the sub category
+    When I say yes
     Then the main and the sub categories disappear from the list
-    And the categories were successfully deleted from the database
+    And the categories are successfully deleted from the database
 
   @categories
-  Scenario: Deleting a sub category
+  Scenario: Deleting a main category with sub categories containing requests not possible
     Given I am Hans Ueli
-    And there exists a sub category without any requests
+    And there exists a main category
+    And there exists a sub category
+    And requests exist for this sub category
+    When I navigate to the categories page
+    Then I can not delete the main category
+
+  @categories
+  Scenario: Deleting a sub category without existing requests
+    Given I am Hans Ueli
+    And there exists a sub category
+    And there do not exist any requests for this sub category
+    And there exist templates for this sub category
     When I navigate to the categories page
     And I delete the sub category
-    Then I am asked whether I really want to delete
-    Then the sub category disappears from the list
-    And the category is successfully deleted from the database
+    Then I am asked whether I really want to delete the sub category
+    When I say yes
+    Then the sub category disappears
+    And the sub category is successfully deleted from the database
+    And the templates are sucessfully deleted from the database
+
+  @categories
+  Scenario: Deleting a sub category with existing requests not possible
+    Given I am Hans Ueli
+    And there exists a sub category
+    And there exist requests for this sub category
+    When I navigate to the categories page
+    Then I can not delete the main category
 
   @categories
   Scenario: Sorting of categories
