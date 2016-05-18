@@ -3,10 +3,14 @@ Feature: Edit a hand over
   Background:
     Given I am Pius
 
+##117332929
   @javascript @browser @personas
   Scenario: Feedback on a successful manual interaction during hand over
     Given there is a hand over with at least one unproblematic model and an option
-    And I open the hand over
+    And signed reservation for this user exist
+    When I open the hand over
+    Then I see the approved reservations
+    And I do not see the signed reservations
     When I assign an inventory code to the unproblematic model
     Then the item is assigned to the line
     And the line is selected
