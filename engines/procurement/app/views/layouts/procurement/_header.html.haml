@@ -54,7 +54,7 @@
               %i.fa.fa-tasks
               = _('Requests')
 
-          - unless (inspectable_categories = Procurement::Category.leafs.select{ |category| category.inspectable_by?(current_user) }).empty?
+          - unless (inspectable_categories = Procurement::Category.all.select{ |category| category.inspectable_by?(current_user) }).empty?
             %li.dropdown{class: opened_menu == :template ? 'active' : nil}
               %a.dropdown-toggle{href: "#", data: {toggle: "dropdown"}}
                 %i.fa.fa-cube

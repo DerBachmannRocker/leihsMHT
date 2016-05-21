@@ -7,13 +7,19 @@ class ProcurementCategories < ActiveRecord::Migration
     end
 
     drop_table :procurement_template_categories
-    create_table :procurement_categories do |t|
+    create_table :procurement_main_categories do |t|
       t.string :name
-      t.integer :parent_id, null: true
       # belongs :procurement_attachment # image
 
       t.index :name, unique: true
-      t.index :parent_id
+    end
+    create_table :procurement_categories do |t|
+      t.string :name
+      t.integer :main_category_id, null: true
+      # belongs :procurement_attachment # image
+
+      t.index :name, unique: true
+      t.index :main_category_id
     end
 
 
@@ -30,17 +36,17 @@ class ProcurementCategories < ActiveRecord::Migration
     drop_table :procurement_budget_limits
     create_table :procurement_budget_limits do |t|
       t.belongs_to :budget_period, null: false
-      t.belongs_to :category, null: false # only main-categories
+      t.belongs_to :main_category, null: false
       t.money :amount
 
-      t.index [:budget_period_id, :category_id], unique: true, name: 'index_on_budget_period_id_and_category_id'
+      t.index [:budget_period_id, :main_category_id], unique: true, name: 'index_on_budget_period_id_and_category_id'
     end
     add_foreign_key(:procurement_budget_limits, :procurement_budget_periods, column: 'budget_period_id')
-    add_foreign_key(:procurement_budget_limits, :procurement_categories, column: 'category_id')
+    add_foreign_key(:procurement_budget_limits, :procurement_main_categories, column: 'main_category_id')
 
 
-    parent_cat = Procurement::Category.create name: 'Old Groups', parent: nil
-    sub_cat = Procurement::Category.create name: 'Existing requests', parent: parent_cat
+    main_category = Procurement::MainCategory.create name: 'Old Groups'
+    sub_cat = Procurement::Category.create name: 'Existing requests', main_category: main_category
 
     remove_foreign_key(:procurement_requests, column: 'group_id')
     rename_column(:procurement_requests, :group_id, :category_id)

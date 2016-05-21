@@ -22,26 +22,18 @@
 
     .panel-body
       :ruby
-        categories = requests.group_by(&:category)
-        selected_categories = Procurement::Category.leafs.select { |category| @filter['category_ids'].map(&:to_i).include?(category.id) }
-        selected_categories.each {|category| categories[category] ||= [] }
+        grouped_categories = requests.group_by(&:category)
+        main_categories = grouped_categories.keys.flat_map(&:main_category).uniq
 
-      - categories.each_pair do |category, requests|
-        .row{style: 'line-height: 2.5em; background-color: #f5f5f5;'}
+      - main_categories.each do |main_category|
+        .row{style: 'line-height: 2.5em; background-color: #e2e2e2;'}
           .col-sm-9.h4
             %i.fa.fa-shopping-cart
-            = category
-            - unless budget_period.past?
-              - if procurement_requester? and (budget_period.in_requesting_phase? or category.inspectable_by? current_user)
-                %a{href: category_budget_period_user_requests_path(category, budget_period, current_user, request_id: 'new_request'), title: _('Create request for this category'), data: {toggle: 'tooltip'}}
-                  %i.fa.fa-plus-circle
-              - if category.inspectable_by? current_user
-                %a{href: choose_category_budget_period_users_path(category, budget_period), title: _('Create request for another user'), data: {toggle: 'tooltip'}}
-                  %i.fa.fa-user-plus
+            = main_category.name
           .col-sm-1
-            - total_price = requests.map {|r| r.total_price(current_user) }.sum
-            - if @user.nil? and category.inspectable_or_readable_by? current_user
-              - budget_limit_amount = category.budget_limits.find_by(budget_period_id: budget_period.id).try(:amount)
+            - total_price = requests.select{|r| main_category.category_ids.include? r.category_id }.map {|r| r.total_price(current_user) }.sum
+            - if @user.nil? # FIXME and category.inspectable_or_readable_by? current_user
+              - budget_limit_amount = main_category.budget_limits.find_by(budget_period_id: budget_period.id).try(:amount)
               .label.label-default.budget_limit{title: _('Limit of category for this budget period'), data: {toggle: 'tooltip'}}
                 %i.fa.fa-pie-chart
                 = money_without_cents_and_with_symbol budget_limit_amount, false
@@ -50,52 +42,81 @@
               %i.fa.fa-shopping-cart
               = money_without_cents_and_with_symbol total_price, false
           .col-sm-2
-            - if @user.nil? and category.inspectable_or_readable_by? current_user
+            - if @user.nil? # FIXME and category.inspectable_or_readable_by? current_user
+              - budget_limit_amount = main_category.budget_limits.find_by(budget_period_id: budget_period.id).try(:amount)
               = render partial: 'procurement/requests/progress_radial', locals: {used: total_price, max: budget_limit_amount}
 
-        - requests.each do |request|
-          %a.list-category-item.row{href: category_budget_period_user_requests_path(request.category, request.budget_period, request.user, request_id: request.id), data: {request_id: request.id}}
-            .col-sm-2
-              = request.article_name
-            .col-sm-2
-              = request.user
-            .col-sm-2
-              = request.organization.parent
-              %br
-              = request.organization
+        - grouped_categories.select{|c| c.main_category == main_category }.each_pair do |category, requests|
+          .row{style: 'line-height: 2.5em; background-color: #f5f5f5;'}
             .col-sm-1
-              .label.label-primary.total_price
-                %i.fa.fa-tag
-                = money_without_cents_and_with_symbol request.price, false
-            .col-sm-2.quantities
-              :ruby
-                state, label_class = state_label(request)
-              .label{class: label_class, data: {toggle: 'tooltip'}, title: _('Requested quantity')}
-                = request.requested_quantity
-                %i.fa.fa-question
-              .label{class: label_class, data: {toggle: 'tooltip'}, title: _('Approved quantity')}
-                - if request.approved_quantity
-                  = request.approved_quantity
-                  %i.fa.fa-check
-                - else
-                  &nbsp;
-              .label{class: label_class, data: {toggle: 'tooltip'}, title: _('Order quantity')}
-                - if request.order_quantity
-                  = request.order_quantity
-                  %i.fa.fa-shopping-cart
-                - else
-                  &nbsp;
+            .col-sm-8.h4
+              %i.fa.fa-shopping-cart
+              = category.name
+              - unless budget_period.past?
+                - if procurement_requester? and (budget_period.in_requesting_phase? or category.inspectable_by? current_user)
+                  %a{href: category_budget_period_user_requests_path(category, budget_period, current_user, request_id: 'new_request'), title: _('Create request for this category'), data: {toggle: 'tooltip'}}
+                    %i.fa.fa-plus-circle
+                - if category.inspectable_by? current_user
+                  %a{href: choose_category_budget_period_users_path(category, budget_period), title: _('Create request for another user'), data: {toggle: 'tooltip'}}
+                    %i.fa.fa-user-plus
             .col-sm-1
-              .label.label-primary.total_price
+              - total_price = requests.map {|r| r.total_price(current_user) }.sum
+              -# FIXME if @user.nil? and category.inspectable_or_readable_by? current_user
+                - budget_limit_amount = category.budget_limits.find_by(budget_period_id: budget_period.id).try(:amount)
+                .label.label-default.budget_limit{title: _('Limit of category for this budget period'), data: {toggle: 'tooltip'}}
+                  %i.fa.fa-pie-chart
+                  = money_without_cents_and_with_symbol budget_limit_amount, false
+                %br
+              .label.label-primary.big_total_price{title: _('Current total of category'), data: {toggle: 'tooltip'}}
                 %i.fa.fa-shopping-cart
-                = money_without_cents_and_with_symbol request.total_price(current_user), false
-            .col-sm-1
-              .label.label-default= _(request.priority.capitalize)
-            .col-sm-1
-              :ruby
-                state, label_class = state_label(request)
-              .label{class: label_class}
-                = _(state.to_s.humanize)
+                = money_without_cents_and_with_symbol total_price, false
+            .col-sm-2
+              -# FIXME if @user.nil? and category.inspectable_or_readable_by? current_user
+                = render partial: 'procurement/requests/progress_radial', locals: {used: total_price, max: budget_limit_amount}
+
+          - requests.each do |request|
+            %a.list-category-item.row{href: category_budget_period_user_requests_path(request.category, request.budget_period, request.user, request_id: request.id), data: {request_id: request.id}}
+              .col-sm-2
+                = request.article_name
+              .col-sm-2
+                = request.user
+              .col-sm-2
+                = request.organization.parent
+                %br
+                = request.organization
+              .col-sm-1
+                .label.label-primary.total_price
+                  %i.fa.fa-tag
+                  = money_without_cents_and_with_symbol request.price, false
+              .col-sm-2.quantities
+                :ruby
+                  state, label_class = state_label(request)
+                .label{class: label_class, data: {toggle: 'tooltip'}, title: _('Requested quantity')}
+                  = request.requested_quantity
+                  %i.fa.fa-question
+                .label{class: label_class, data: {toggle: 'tooltip'}, title: _('Approved quantity')}
+                  - if request.approved_quantity
+                    = request.approved_quantity
+                    %i.fa.fa-check
+                  - else
+                    &nbsp;
+                .label{class: label_class, data: {toggle: 'tooltip'}, title: _('Order quantity')}
+                  - if request.order_quantity
+                    = request.order_quantity
+                    %i.fa.fa-shopping-cart
+                  - else
+                    &nbsp;
+              .col-sm-1
+                .label.label-primary.total_price
+                  %i.fa.fa-shopping-cart
+                  = money_without_cents_and_with_symbol request.total_price(current_user), false
+              .col-sm-1
+                .label.label-default= _(request.priority.capitalize)
+              .col-sm-1
+                :ruby
+                  state, label_class = state_label(request)
+                .label{class: label_class}
+                  = _(state.to_s.humanize)
 
 :scss
   .panel-body {

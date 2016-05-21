@@ -10,14 +10,12 @@
 
   .panel-body
     .row
-      .col-sm-6
-        = render partial: 'procurement/templates/categories', locals: {categories: @categories}
-
-      .col-sm-6
+      .col-sm-12
         %h4
-          %i.fa.fa-shopping-cart
+          %i.fa.fa-cube
+          = _('Choose an article/project')
+          = _('or')
           = _('Add article for specific group')
-        .list-group
-          - @categories.each do |category|
-            %a.list-group-item{href: category_budget_period_user_requests_path(category, @budget_period, @user, request_id: 'new_request')}
-              = category
+        - Procurement::MainCategory.all.each do |main_category|
+          %h5= main_category.name
+          = render partial: 'procurement/templates/categories', locals: {categories: main_category.categories}

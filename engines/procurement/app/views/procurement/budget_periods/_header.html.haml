@@ -6,14 +6,14 @@
       - if @user == current_user and not budget_period.past?
         %a{href: new_user_budget_period_request_path(@user, budget_period), title: _('Add article'), data: {toggle: 'tooltip'}}
           %i.fa.fa-plus-circle
-    - if @user and @group
+    - if @user and @category
       = render partial: 'procurement/budget_periods/phases', locals: {budget_period: budget_period}
 
   .col-xs-3
-    - if @group
+    - if @category
       %h4
         %i.fa.fa-shopping-cart
-        = @group
+        = @category
       - if @user
         -#old#- if @group.email
           %a{href: "mailto:#{@group.email}?subject=#{_('Inquiry to procurement request')} (#{@group.name})"}
@@ -25,7 +25,7 @@
           %b
             = succeed ':' do
               = _('Inspectors')
-        - @group.inspectors.each do |inspector|
+        - @category.inspectors.each do |inspector|
           %div{style: 'padding-left: 1em'}
             %i.fa.fa-user-md
             = inspector

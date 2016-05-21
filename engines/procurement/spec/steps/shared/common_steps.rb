@@ -461,7 +461,7 @@ module CommonSteps
   end
 
   step 'several template articles in categories exist' do
-    Procurement::Category.leafs.each do |category|
+    Procurement::Category.all.each do |category|
       @category = category
       step 'the category contains template articles'
     end

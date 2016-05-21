@@ -399,13 +399,13 @@ ActiveRecord::Schema.define(version: 20160506120000) do
 
   create_table "procurement_budget_limits", force: :cascade do |t|
     t.integer "budget_period_id", limit: 4,                   null: false
-    t.integer "category_id",      limit: 4,                   null: false
+    t.integer "main_category_id", limit: 4,                   null: false
     t.integer "amount_cents",     limit: 4,   default: 0,     null: false
     t.string  "amount_currency",  limit: 255, default: "CHF", null: false
   end
 
-  add_index "procurement_budget_limits", ["budget_period_id", "category_id"], name: "index_on_budget_period_id_and_category_id", unique: true, using: :btree
-  add_index "procurement_budget_limits", ["category_id"], name: "fk_rails_cc4ab87946", using: :btree
+  add_index "procurement_budget_limits", ["budget_period_id", "main_category_id"], name: "index_on_budget_period_id_and_category_id", unique: true, using: :btree
+  add_index "procurement_budget_limits", ["main_category_id"], name: "fk_rails_1c5f9021ad", using: :btree
 
   create_table "procurement_budget_periods", force: :cascade do |t|
     t.string   "name",                  limit: 255, null: false
@@ -417,12 +417,12 @@ ActiveRecord::Schema.define(version: 20160506120000) do
   add_index "procurement_budget_periods", ["end_date"], name: "index_procurement_budget_periods_on_end_date", using: :btree
 
   create_table "procurement_categories", force: :cascade do |t|
-    t.string  "name",      limit: 255
-    t.integer "parent_id", limit: 4
+    t.string  "name",             limit: 255
+    t.integer "main_category_id", limit: 4
   end
 
+  add_index "procurement_categories", ["main_category_id"], name: "index_procurement_categories_on_main_category_id", using: :btree
   add_index "procurement_categories", ["name"], name: "index_procurement_categories_on_name", unique: true, using: :btree
-  add_index "procurement_categories", ["parent_id"], name: "index_procurement_categories_on_parent_id", using: :btree
 
   create_table "procurement_category_inspectors", force: :cascade do |t|
     t.integer "user_id",     limit: 4, null: false
@@ -431,6 +431,12 @@ ActiveRecord::Schema.define(version: 20160506120000) do
 
   add_index "procurement_category_inspectors", ["category_id"], name: "fk_rails_ed1149b98d", using: :btree
   add_index "procurement_category_inspectors", ["user_id", "category_id"], name: "index_procurement_category_inspectors_on_user_id_and_category_id", unique: true, using: :btree
+
+  create_table "procurement_main_categories", force: :cascade do |t|
+    t.string "name", limit: 255
+  end
+
+  add_index "procurement_main_categories", ["name"], name: "index_procurement_main_categories_on_name", unique: true, using: :btree
 
   create_table "procurement_organizations", force: :cascade do |t|
     t.string  "name",      limit: 255
@@ -652,7 +658,7 @@ ActiveRecord::Schema.define(version: 20160506120000) do
   add_foreign_key "procurement_accesses", "users"
   add_foreign_key "procurement_attachments", "procurement_requests", column: "request_id"
   add_foreign_key "procurement_budget_limits", "procurement_budget_periods", column: "budget_period_id"
-  add_foreign_key "procurement_budget_limits", "procurement_categories", column: "category_id"
+  add_foreign_key "procurement_budget_limits", "procurement_main_categories", column: "main_category_id"
   add_foreign_key "procurement_category_inspectors", "procurement_categories", column: "category_id"
   add_foreign_key "procurement_category_inspectors", "users"
   add_foreign_key "procurement_organizations", "procurement_organizations", column: "parent_id"

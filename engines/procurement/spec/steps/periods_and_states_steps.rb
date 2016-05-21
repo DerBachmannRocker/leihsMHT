@@ -137,7 +137,7 @@ steps_for :periods_and_states do
                   .detect { |bp| bp.past? and bp.requests.exists? }
                   .requests.first
     visit_request(request)
-    category = Procurement::Category.leafs.where.not(id: request.category).first
+    category = Procurement::Category.where.not(id: request.category).first
 
     expect(page).to have_no_selector '.btn-group .fa-gear'
 

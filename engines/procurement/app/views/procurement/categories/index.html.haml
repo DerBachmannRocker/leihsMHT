@@ -4,40 +4,40 @@
 
 = form_tag nil, remote: true, id: "accordion" do
 
-  - @categories.each do |category|
+  - @categories.each do |main_category|
     .panel.panel-default
-      .panel-heading.collapsed(data-toggle="collapse" data-parent="#accordion" href="#collapse_#{category.id}")
+      .panel-heading.collapsed(data-toggle="collapse" data-parent="#accordion" href="#collapse_#{main_category.id}")
         .row
           .col-xs-11
             %span.toggler
               %i.fa.fa-caret-right
             %i.fa.fa-cube
-            - if category.id
-              %input{type: :hidden, name: "categories[#{category.object_id}][id]", value: category.id}
-              %input{type: :hidden, name: "categories[#{category.object_id}][_destroy]"}
+            - if main_category.id
+              %input{type: :hidden, name: "main_categories[#{main_category.object_id}][id]", value: main_category.id}
+              %input{type: :hidden, name: "main_categories[#{main_category.object_id}][_destroy]"}
             %label
               = succeed ':' do
                 = _('Main category')
-              %input{name: "categories[#{category.object_id}][name]", value: category.name}
+              %input{name: "main_categories[#{main_category.object_id}][name]", value: main_category.name}
           .col-xs-1.text-right{style: 'font-size: 1.6em'}
-            - if category.can_destroy?
+            - if main_category.can_destroy?
               %i.fa.fa-minus-circle{title: _("Delete main category "), data: {toggle: 'tooltip'}}
 
-      .panel-body(id="collapse_#{category.id}" class="panel-collapse collapse" role="tabpanel")
+      .panel-body(id="collapse_#{main_category.id}" class="panel-collapse collapse" role="tabpanel")
         .row
           .col-xs-4
             %h4= _('Budget limits')
             - Procurement::BudgetPeriod.order(end_date: :desc).each do |budget_period|
-              - budget_limit = category.budget_limits.find_or_initialize_by(budget_period_id: budget_period.id)
+              - budget_limit = main_category.budget_limits.find_or_initialize_by(budget_period_id: budget_period.id)
               = fields_for :budget_limits, budget_limit do |ff|
                 - if budget_limit.persisted?
-                  %input{type: :hidden, name: "categories[#{category.object_id}][budget_limits_attributes][#{budget_limit.object_id}][id]", value: ff.object.id}
+                  %input{type: :hidden, name: "main_categories[#{main_category.object_id}][budget_limits_attributes][#{budget_limit.object_id}][id]", value: ff.object.id}
                 .row
                   .col-sm-4
-                    %input{type: :hidden, name: "categories[#{category.object_id}][budget_limits_attributes][#{budget_limit.object_id}][budget_period_id]", value: ff.object.budget_period_id}
+                    %input{type: :hidden, name: "main_categories[#{main_category.object_id}][budget_limits_attributes][#{budget_limit.object_id}][budget_period_id]", value: ff.object.budget_period_id}
                     = budget_period
                   .col-sm-8
-                    %input.form-control{type: :number, name: "categories[#{category.object_id}][budget_limits_attributes][#{budget_limit.object_id}][amount]", min: 0, step: 1, placeholder: _('Budget'), autocomplete: :off, value: ff.object.amount.to_i}
+                    %input.form-control{type: :number, name: "main_categories[#{main_category.object_id}][budget_limits_attributes][#{budget_limit.object_id}][amount]", min: 0, step: 1, placeholder: _('Budget'), autocomplete: :off, value: ff.object.amount.to_i}
 
           .col-xs-8
             %h4= _('Subcategories')
@@ -48,22 +48,22 @@
                   %th.col-xs-5= _('Inspectors')
                   %th.col-xs-2
               %tbody
-                - category.children.each do |subcategory|
+                - main_category.categories.each do |subcategory|
                   %tr.row
                     %td.col-xs-5
-                      %input{type: :hidden, name: "categories[#{category.object_id}][children_attributes][#{subcategory.object_id}][id]", value: subcategory.id}
-                      %input{type: :hidden, name: "categories[#{category.object_id}][children_attributes][#{subcategory.object_id}][_destroy]"}
-                      %input.form-control{name: "categories[#{category.object_id}][children_attributes][#{subcategory.object_id}][name]", placeholder: _('Name'), value: subcategory.name}
+                      %input{type: :hidden, name: "main_categories[#{main_category.object_id}][categories_attributes][#{subcategory.object_id}][id]", value: subcategory.id}
+                      %input{type: :hidden, name: "main_categories[#{main_category.object_id}][categories_attributes][#{subcategory.object_id}][_destroy]"}
+                      %input.form-control{name: "main_categories[#{main_category.object_id}][categories_attributes][#{subcategory.object_id}][name]", placeholder: _('Name'), value: subcategory.name}
                     %td.col-xs-5
-                      %input.form-control{name: "categories[#{category.object_id}][children_attributes][#{subcategory.object_id}][inspector_ids]", multiple: true, placeholder: _("Name of the inspector"), autocomplete: :off, data: {current: subcategory.inspectors.to_json(only: [:id, :firstname, :lastname])}}
+                      %input.form-control{name: "main_categories[#{main_category.object_id}][categories_attributes][#{subcategory.object_id}][inspector_ids]", multiple: true, placeholder: _("Name of the inspector"), autocomplete: :off, data: {current: subcategory.inspectors.to_json(only: [:id, :firstname, :lastname])}}
                     %td.col-xs-2.text-right
                       - if subcategory.can_destroy?
                         %i.fa.fa-minus-circle{title: _("Delete subcategory"), data: {toggle: 'tooltip'}}
                 %tr.row
                   %td.col-xs-5
-                    %input.form-control{name: "categories[#{category.object_id}][children_attributes][new][name]", placeholder: _('Name')}
+                    %input.form-control{name: "main_categories[#{main_category.object_id}][categories_attributes][new][name]", placeholder: _('Name')}
                   %td.col-xs-5
-                    %input.form-control{name: "categories[#{category.object_id}][children_attributes][new][inspector_ids]", multiple: true, placeholder: _("Name of the inspector"), autocomplete: :off}
+                    %input.form-control{name: "main_categories[#{main_category.object_id}][categories_attributes][new][inspector_ids]", multiple: true, placeholder: _("Name of the inspector"), autocomplete: :off}
                   %td.col-xs-2.text-right
                     %i.fa.fa-minus-circle{title: _("Delete subcategory "), data: {toggle: 'tooltip'}}
               %tfoot

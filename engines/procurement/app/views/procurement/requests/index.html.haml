@@ -20,7 +20,16 @@
             %i.fa.fa-plus-circle
             = _('Add article')
           %hr
-          = render partial: 'procurement/templates/categories', locals: {categories: [@category]}
+          - if @category.templates.exists?
+            %h4
+              %i.fa.fa-cube
+              = _('Choose an article/project')
+            .list-group
+              - @category.templates.each do |template|
+                %a.list-group-item.show_template{href: '#', data: {template_id: template.id}}
+                  = template
+                  .label.label-primary.pull-right
+                    = money_without_cents_and_with_symbol template.price
 
       - i = 0
       - @requests.each do |request|

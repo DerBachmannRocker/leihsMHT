@@ -27,18 +27,11 @@
       = _('Categories')
     %ul
       %select{name: 'filter[category_ids][]', multiple: true}
-        :ruby
-          my_categories, other_categories = Procurement::Category.leafs.partition { |category| category.inspectable_by?(current_user) }
-        - unless my_categories.blank?
-          %optcategory{label: _('My categories')}
-            - my_categories.each do |category|
-              %option{value: category.id, selected: @filter['category_ids'].map(&:to_i).include?(category.id)}= category
-          %optcategory{label: _('Other categories')}
-            - other_categories.each do |category|
-              %option{value: category.id, selected: @filter['category_ids'].map(&:to_i).include?(category.id)}= category
-        - else
-          - other_categories.each do |category|
-            %option{value: category.id, selected: @filter['category_ids'].map(&:to_i).include?(category.id)}= category
+        - Procurement::MainCategory.all.each do |main_category|
+          %optgroup{label: main_category.name}
+          - main_category.categories.each do |category|
+            %option{value: category.id, selected: @filter['category_ids'].map(&:to_i).include?(category.id)}
+              = category.name
 
   - if procurement_inspector_or_admin?
     .form-group

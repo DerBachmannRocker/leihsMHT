@@ -113,7 +113,7 @@ steps_for :inspection do
   end
 
   def my_categories
-    Procurement::Category.leafs.select do |category|
+    Procurement::Category.all.select do |category|
       category.inspectable_by?(@current_user)
     end
   end

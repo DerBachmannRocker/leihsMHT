@@ -13,7 +13,7 @@ module Procurement
     end
 
     def index
-      @categories = Category.main
+      @categories = MainCategory.all
       respond_to do |format|
         format.html
         format.json { render json: @categories }
@@ -34,9 +34,9 @@ module Procurement
     private
 
     def create_or_update_or_destroy
-      params.require(:categories).values.map do |param|
+      params.require(:main_categories).values.map do |param|
         if param[:id]
-          r = Procurement::Category.find(param[:id])
+          r = Procurement::MainCategory.find(param[:id])
           if param.delete(:_destroy) == '1' or param[:name].blank?
             r.destroy
           else
@@ -44,7 +44,7 @@ module Procurement
           end
         else
           next if param[:name].blank?
-          r = Procurement::Category.create(param)
+          r = Procurement::MainCategory.create(param)
         end
         r.errors.full_messages
       end.flatten.compact

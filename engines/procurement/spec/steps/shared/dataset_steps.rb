@@ -24,13 +24,14 @@ module DatasetSteps
   step 'there exists a :level category' do |level|
     @category = case level
                 when 'main'
-                  Procurement::Category.main.first || \
-                  FactoryGirl.create(:procurement_category, parent: nil)
+                  Procurement::MainCategory.first || \
+                  FactoryGirl.create(:procurement_main_category)
                 when 'sub'
-                  Procurement::Category.leafs.first || \
+                  Procurement::Category.first || \
                   begin
-                    parent = FactoryGirl.create(:procurement_category, parent: nil)
-                    FactoryGirl.create(:procurement_category, parent: parent)
+                    main_category = FactoryGirl.create(:procurement_category)
+                    FactoryGirl.create(:procurement_category,
+                                       main_category: main_category)
                   end
                 else
                   raise

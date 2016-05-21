@@ -196,7 +196,7 @@ module FilterSteps
 
   step 'only my categories are selected' do
     my_categories, other_categories = \
-    Procurement::Category.leafs.partition do |category|
+    Procurement::Category.all.partition do |category|
       category.inspectable_by?(@current_user)
     end
     within '#filter_panel' do
