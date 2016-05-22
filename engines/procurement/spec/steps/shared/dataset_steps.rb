@@ -28,11 +28,7 @@ module DatasetSteps
                   FactoryGirl.create(:procurement_main_category)
                 when 'sub'
                   Procurement::Category.first || \
-                  begin
-                    main_category = FactoryGirl.create(:procurement_category)
-                    FactoryGirl.create(:procurement_category,
-                                       main_category: main_category)
-                  end
+                  FactoryGirl.create(:procurement_category)
                 else
                   raise
                 end

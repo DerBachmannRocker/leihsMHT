@@ -28,7 +28,8 @@ module Procurement
         show_all = (not budget_period.in_requesting_phase?) \
                       or category.inspectable_or_readable_by?(current_user)
         { _('Budget period') => budget_period,
-          _('Category') => category, _('Requester') => user,
+          _('Main category') => category.main_category.name,
+          _('Sub category') => category.name, _('Requester') => user,
           _('Organisation unit') => organization.name_with_parent,
           _('Article / Project') => article_name,
           _('Article nr. / Producer nr.') => article_number,

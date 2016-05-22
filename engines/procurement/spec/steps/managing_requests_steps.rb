@@ -568,7 +568,7 @@ steps_for :managing_requests do
       @found_requests = Procurement::Request.search(@filter[:search]).where(
         user_id: @current_user,
         budget_period_id: @filter[:budget_period_ids],
-        group_id: @filter[:group_ids],
+        category_id: @filter[:category_ids],
         priority: @filter[:priorities]
       ).select do |r|
         @filter[:states].map(&:to_sym).include? r.state(@current_user)

@@ -305,7 +305,7 @@ steps_for :roles do
     expect(page).to have_content _('Request moved')
   end
 
-  step 'I can create requests for my category for another person' do
+  step 'I can create requests for my category/categories for another person' do
     @category = FactoryGirl.create :procurement_category
     @category.inspectors << @current_user
     @budget_period = FactoryGirl.create(:procurement_budget_period)

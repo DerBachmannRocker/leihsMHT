@@ -47,7 +47,7 @@ module FilterSteps
     @filter ||= {}
     request = Procurement::Request.where(
       budget_period_id: @filter[:budget_period_ids],
-      group_id: @filter[:group_ids],
+      category_id: @filter[:category_ids],
       priority: @filter[:priorities]
     ).all.sample
     text = request.article_name[0, 6]

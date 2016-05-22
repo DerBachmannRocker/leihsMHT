@@ -182,9 +182,31 @@ steps_for :categories do
       .to eq 0
   end
 
+  step ':n main categories exist' do |n|
+    n.to_i.times do
+      FactoryGirl.create :procurement_main_category
+    end
+  end
+
+  step 'each main category has two sub categories' do
+    Procurement::MainCategory.all.each do |main_category|
+      2.times do
+        FactoryGirl.create(:procurement_category, main_category: main_category)
+      end
+      expect(main_category.reload.categories.count).to eq 2
+    end
+  end
+
   step 'there exists a sub category without any requests' do
-    @category = FactoryGirl.create :procurement_category
+    step 'there exists a sub category'
     expect(@category.requests).to be_empty
+  end
+
+  step 'there exist requests for this sub category' do
+    3.times do
+      FactoryGirl.create(:procurement_request, category: @category)
+    end
+    expect(@category.reload.requests.count).to eq 3
   end
 
   step 'I delete the main/sub category' do
