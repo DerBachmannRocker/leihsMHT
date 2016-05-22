@@ -59,7 +59,7 @@
                     %td.col-xs-2.text-right
                       - if subcategory.can_destroy?
                         %i.fa.fa-minus-circle{title: _("Delete subcategory"), data: {toggle: 'tooltip'}}
-                %tr.row
+                %tr.row.new_subcategory
                   %td.col-xs-5
                     %input.form-control{name: "main_categories[#{main_category.object_id}][categories_attributes][new][name]", placeholder: _('Name')}
                   %td.col-xs-5
@@ -84,7 +84,7 @@
       = _('Save')
 
 :scss
-  #new_main_category {
+  #new_main_category, .new_subcategory {
     display: none;
   }
 
@@ -96,10 +96,8 @@
       false
 
     $('tfoot').on 'click', '.fa-plus-circle', ->
-      target_el = $(this).closest('tfoot').prev('tbody').find('tr:last-child')
-      cloned_el = target_el.clone()
-      cloned_el.find('input').val('')
-      cloned_el.insertAfter(target_el)
+      target_el = $(this).closest('tfoot').prev('tbody').find('tr.new_subcategory')
+      target_el.show()
       $(this).hide()
       false
 

@@ -25,6 +25,11 @@ module Procurement
 
     default_scope { order(:name) }
 
+    def inspector_ids_with_split=(val)
+      self.inspector_ids_without_split = val.split(',').map &:to_i
+    end
+    alias_method_chain :inspector_ids=, :split
+
     ########################################################
 
     def inspectable_by?(user)

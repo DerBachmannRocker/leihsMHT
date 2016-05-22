@@ -191,11 +191,15 @@
               %li.dropdown-header
                 %h5
                   = _('Move to another category')
-              - Procurement::Category.where.not(id: @category).each do |category|
-                %li
-                  %a{href: move_category_budget_period_user_request_path(@category, @budget_period, @user, request, to_category_id: category.id), data: {remote: true, method: :put}}
-                    %i.fa.fa-arrow-right
-                    = category
+              - Procurement::MainCategory.where.not(id: @category.main_category).each do |main_category|
+                %li.dropdown-header
+                  %h5
+                    = main_category.name
+                - main_category.categories.where.not(id: @category).each do |category|
+                  %li
+                    %a{href: move_category_budget_period_user_request_path(@category, @budget_period, @user, request, to_category_id: category.id), data: {remote: true, method: :put}}
+                      %i.fa.fa-arrow-right
+                      = category.name
               %li.divider{role: 'separator'}
               %li.dropdown-header
                 %h5

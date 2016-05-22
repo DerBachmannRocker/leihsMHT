@@ -1,11 +1,15 @@
 module Procurement
   class MainCategory < ActiveRecord::Base
 
-    has_many :budget_limits, dependent: :delete_all, inverse_of: :main_category
+    has_many :budget_limits,
+             dependent: :delete_all,
+             inverse_of: :main_category
     accepts_nested_attributes_for :budget_limits,
                                   allow_destroy: true
 
-    has_many :categories, dependent: :restrict_with_exception
+    has_many :categories,
+             dependent: :restrict_with_exception,
+             inverse_of: :main_category
     accepts_nested_attributes_for :categories,
                                   allow_destroy: true,
                                   reject_if: :all_blank

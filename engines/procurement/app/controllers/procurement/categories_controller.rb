@@ -7,11 +7,6 @@ module Procurement
       authorize Category
     end
 
-    before_action only: [:create, :update] do
-      params[:category][:inspector_ids] = \
-        params[:category][:inspector_ids].split(',').map &:to_i
-    end
-
     def index
       @categories = MainCategory.all
       respond_to do |format|
