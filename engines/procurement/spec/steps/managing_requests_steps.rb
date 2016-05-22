@@ -16,7 +16,7 @@ steps_for :managing_requests do
   end
 
   step 'a request containing a template article exists' do
-    category = FactoryGirl.create :procurement_category, :as_leaf
+    category = FactoryGirl.create :procurement_category
     @template = FactoryGirl.create :procurement_template, category: category
     @request = FactoryGirl.create :procurement_request,
                                   user: @current_user,

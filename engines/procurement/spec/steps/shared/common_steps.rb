@@ -456,7 +456,7 @@ module CommonSteps
 
   step 'several categories exist' do
     3.times do
-      FactoryGirl.create :procurement_category, :as_leaf
+      FactoryGirl.create :procurement_category
     end
   end
 

@@ -9,10 +9,6 @@ steps_for :templates do
   include NavigationSteps
   include PersonasSteps
 
-  step 'a category exists' do
-    @category = FactoryGirl.create :procurement_category, :as_leaf
-  end
-
   step 'I delete an article from the category' do
     @template = @category.templates.first
     within '.panel-collapse.in' do

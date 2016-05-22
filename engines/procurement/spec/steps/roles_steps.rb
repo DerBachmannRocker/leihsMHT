@@ -136,7 +136,7 @@ steps_for :roles do
   end
 
   step 'I can move requests to other categories' do
-    new_category = FactoryGirl.create :procurement_category, :as_leaf
+    new_category = FactoryGirl.create :procurement_category
     prepare_request
     go_to_request
     find(".row[data-request_id='#{@request.id}'] button .fa-gear").click
@@ -213,7 +213,7 @@ steps_for :roles do
 
   step 'I can not create requests for another person' do
     @budget_period = FactoryGirl.create(:procurement_budget_period)
-    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category = FactoryGirl.create :procurement_category
     visit procurement.overview_requests_path
     expect(page).not_to have_selector "a[href*='users/choose']"
 
@@ -225,7 +225,7 @@ steps_for :roles do
 
   step 'I can not create a request for myself' do
     @budget_period = FactoryGirl.create(:procurement_budget_period)
-    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category = FactoryGirl.create :procurement_category
     visit procurement.overview_requests_path
     expect(page).not_to have_selector("a[href*='new_request']")
 
@@ -306,7 +306,7 @@ steps_for :roles do
   end
 
   step 'I can create requests for my category for another person' do
-    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category = FactoryGirl.create :procurement_category
     @category.inspectors << @current_user
     @budget_period = FactoryGirl.create(:procurement_budget_period)
     visit procurement.overview_requests_path
@@ -319,7 +319,7 @@ steps_for :roles do
   end
 
   step 'I can manage templates for categories I am inspector' do
-    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category = FactoryGirl.create :procurement_category
     @category.inspectors << @current_user
     step 'I navigate to procurement'
     click_link _('Templates')
@@ -366,7 +366,7 @@ steps_for :roles do
 
   def prepare_request(requester: @current_user)
     @budget_period = FactoryGirl.create(:procurement_budget_period)
-    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category = FactoryGirl.create :procurement_category
     if requester == @current_user and not \
         Procurement::Access.requesters.find_by(user_id: @current_user.id)
       FactoryGirl.create :procurement_access, :requester, user: @current_user

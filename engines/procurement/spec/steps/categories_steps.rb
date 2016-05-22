@@ -183,7 +183,7 @@ steps_for :categories do
   end
 
   step 'there exists a sub category without any requests' do
-    @category = FactoryGirl.create(:procurement_category, :as_leaf)
+    @category = FactoryGirl.create :procurement_category
     expect(@category.requests).to be_empty
   end
 

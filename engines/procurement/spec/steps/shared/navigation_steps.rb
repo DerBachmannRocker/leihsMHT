@@ -116,7 +116,7 @@ module NavigationSteps
     expect(page).to have_selector('h1', text: _('Budget periods'))
   end
 
-  step 'I navigate to the categories page' do
+  step 'I navigate to the categories (edit )page' do
     if has_no_selector? '.navbar .navbar-right', text: _('Procurement')
       visit procurement.root_path
     end

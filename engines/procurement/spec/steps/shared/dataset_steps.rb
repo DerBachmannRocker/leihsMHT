@@ -37,6 +37,12 @@ module DatasetSteps
                   raise
                 end
   end
+  step 'a main category exists' do
+    step 'there exists a main category'
+  end
+  step 'a category exists' do
+    step 'there exists a sub category'
+  end
 
   step 'the current budget period exist' do
     @budget_period = FactoryGirl.create(:procurement_budget_period)
