@@ -152,7 +152,7 @@ module NavigationSteps
     expect(page).to have_selector('h1', text: _('Users'))
   end
 
-  step 'I navigate to the templates page of my group' do
+  step 'I navigate to the templates page of my category' do
     # NOTE refresh the page
     if has_no_selector? '.navbar', text: _('Templates')
       visit procurement.root_path
@@ -162,11 +162,12 @@ module NavigationSteps
       click_on _('Templates')
       click_on @category.name
     end
-    expect(page).to have_selector('h1', text: _('Templates'))
+    expect(page).to have_selector('h3', text: @category.name)
+    expect(page).to have_selector('.panel-heading', text: _('Templates'))
   end
   # alias
   step 'I navigate to the templates page' do
-    step 'I navigate to the templates page of my group'
+    step 'I navigate to the templates page of my category'
   end
 
   step 'I pick a requester' do

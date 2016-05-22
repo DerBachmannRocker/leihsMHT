@@ -36,8 +36,11 @@ module DatasetSteps
   step 'a main category exists' do
     step 'there exists a main category'
   end
-  step 'a category exists' do
+  step "a category which I'm inspector exists" do
     step 'there exists a sub category'
+    unless @category.inspectors.include? @current_user
+      @category.inspectors << @current_user
+    end
   end
 
   step 'the current budget period exist' do

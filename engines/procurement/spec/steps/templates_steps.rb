@@ -11,23 +11,23 @@ steps_for :templates do
 
   step 'I delete an article from the category' do
     @template = @category.templates.first
-    within '.panel-collapse.in' do
+    within '.panel' do
       within(:xpath, "//input[@value='#{@template.article_name}']/ancestor::tr") do
         find('i.fa-minus-circle').click
       end
     end
   end
 
-  step 'I delete the category' do
-    within(:xpath, "//input[@value='#{@category.name}']/ancestor::" \
-                   "div[contains(@class, 'panel-heading')]") do
-      find('i.fa-minus-circle').click
-    end
-  end
+  # step 'I delete the category' do
+  #   within(:xpath, "//input[@value='#{@category.name}']/ancestor::" \
+  #                  "div[contains(@class, 'panel-heading')]") do
+  #     find('i.fa-minus-circle').click
+  #   end
+  # end
 
-  step 'I edit the category' do
-    find("input[value='#{@category.name}']").click
-  end
+  # step 'I edit the category' do
+  #   find("input[value='#{@category.name}']").click
+  # end
 
   step 'I enter the category name' do
     @name = Faker::Lorem.sentence
@@ -36,11 +36,11 @@ steps_for :templates do
     end
   end
 
-  step 'I modify the category name' do
-    @el = find(:xpath, "//input[@value='#{@category.name}']/ancestor::" \
-                       "div[contains(@class, 'panel-heading')]")
-    step 'I enter the category name'
-  end
+  # step 'I modify the category name' do
+  #   @el = find(:xpath, "//input[@value='#{@category.name}']/ancestor::" \
+  #                      "div[contains(@class, 'panel-heading')]")
+  #   step 'I enter the category name'
+  # end
 
   step 'the template is already used in many requests' do
     3.times do
@@ -51,7 +51,7 @@ steps_for :templates do
   end
 
   step 'the article of the category is marked red' do
-    within '.panel-collapse.in' do
+    within '.panel' do
       find ".bg-danger input[name*='[article_name]']" \
            "[value='#{@template.article_name}']"
     end
@@ -61,7 +61,7 @@ steps_for :templates do
     all('.panel-default', minimum: 1).each do |panel|
       within panel do
         find('.panel-heading').click
-        within '.panel-collapse.in' do
+        within '.panel' do
           texts = all("tbody tr input[name*='[article_name]']", minimum: 1) \
                     .map &:value
           texts.delete('')
@@ -118,7 +118,7 @@ steps_for :templates do
   end
 
   step 'the following fields are filled' do |table|
-    within '.panel-collapse.in' do
+    within '.panel' do
       el = if @template
              find(:xpath,
                   "//input[@value='#{@template.article_name}']/ancestor::tr")

@@ -14,7 +14,7 @@ Feature: Procurement Categories
     Then I see a success message
     And I stay on the main categories edit page
     And the new category appears in the list
-    And the new category was created in the database
+    And the new main category was created in the database
 
   @categories
   Scenario: Creating the sub categories

@@ -1,11 +1,11 @@
 # rubocop:disable Metrics/ModuleLength
 module FilterSteps
 
-  step 'all groups in the filter groups are selected' do
+  step 'all categories in the filter categories are selected' do
     within '#filter_panel' do
-      within 'select[name="filter[group_ids][]"]', visible: false do
-        Procurement::Group.all.each do |group|
-          expect(find "option[value='#{group.id}']", visible: false).to \
+      within 'select[name="filter[category_ids][]"]', visible: false do
+        Procurement::Category.all.each do |category|
+          expect(find "option[value='#{category.id}']", visible: false).to \
             be_selected
         end
       end
@@ -238,7 +238,7 @@ module FilterSteps
   step 'the filter settings have not changed' do
     step 'the filter "Only show my own requests" is selected'
     step 'the current budget period is selected'
-    step 'all groups in the filter groups are selected'
+    step 'all categories in the filter categories are selected'
     step 'all organisations are selected'
     step 'both priorities are selected'
     step 'all states are selected'

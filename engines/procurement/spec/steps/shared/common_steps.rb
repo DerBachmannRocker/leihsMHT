@@ -170,7 +170,7 @@ module CommonSteps
 
   step 'I delete the following fields' do |table|
     el1, el2 = if @template
-                 ['.panel-collapse.in',
+                 ['.panel',
                   find(:xpath,
                        "//input[@value='#{@template.article_name}']/ancestor::tr")]
                elsif @request
@@ -261,30 +261,30 @@ module CommonSteps
     }
   end
 
-  step 'I move a request to the other group' do
+  step 'I move a request to the other category' do
     within '.request', match: :first do
       @request = Procurement::Request.find current_scope['data-request_id']
-      groups = Procurement::Group.where.not(id: @request.group_id)
+      categories = Procurement::Category.where.not(id: @request.category_id)
 
-      @other_group = if @not_inspected_group
-                       groups.detect do |group|
-                         not group.inspectable_by?(@current_user)
-                       end
-                     else
-                       groups.first
-                     end
+      @other_category = if @not_inspected_category
+                          categories.detect do |category|
+                            not category.inspectable_by?(@current_user)
+                          end
+                        else
+                          categories.first
+                        end
 
-      link_on_dropdown(@other_group.to_s).click
+      link_on_dropdown(@other_category.to_s).click
     end
 
     @changes = {
-      group_id: @other_group.id
+      category_id: @other_category.id
     }
   end
 
-  step 'I move a request to the other group where I am not inspector' do
-    @not_inspected_group = true
-    step 'I move a request to the other group'
+  step 'I move a request to the other category where I am not inspector' do
+    @not_inspected_category = true
+    step 'I move a request to the other category'
   end
 
   step 'I press on the plus icon of a sub category' do

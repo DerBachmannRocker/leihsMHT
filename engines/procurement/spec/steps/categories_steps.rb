@@ -53,15 +53,20 @@ steps_for :categories do
     find('table').find('tr', text: @name)
   end
 
-  step 'the new group was created in the database' do
-    group = Procurement::Group.find_by_name(@name)
-    expect(group).to be
-    expect(group.name).to eq @name
-    expect(group.email).to eq @email
+  step 'the new main category was created in the database' do
+    category = Procurement::MainCategory.find_by_name(@name)
+    expect(category).to be
+    expect(category.name).to eq @name
+    expect(category.budget_limits.first.amount_cents).to eq (@limit * 100)
+  end
+
+  step 'the new sub category with its inspectors was created in the database' do
+    category = Procurement::Category.find_by_name(@name)
+    expect(category).to be
+    expect(category.name).to eq @name
     @inspectors.each do |inspector|
-      expect(group.inspectors).to include inspector
+      expect(category.inspectors).to include inspector
     end
-    expect(group.budget_limits.first.amount_cents).to eq (@limit * 100)
   end
 
   step 'the procurement groups are sorted 0-10 and a-z' do
@@ -262,8 +267,10 @@ steps_for :categories do
     step 'I see the name field marked red'
   end
 
-  step 'the new group has not been created' do
-    expect(Procurement::Group.exists?).to be false
+  step 'the new category has not been created' do
+    # FIXME split into separate steps
+    expect(Procurement::MainCategory.exists?).to be false
+    expect(Procurement::Category.exists?).to be false
   end
 
   private
