@@ -344,7 +344,15 @@ steps_for :roles do
 
   step 'I can create a category' do
     step 'I navigate to the categories page'
-    expect(page).to have_selector "a[href='#{procurement.new_category_path}']"
+    expect(page).to have_selector 'form .fa-plus-circle'
+  end
+
+  step 'I can assign inspectors to categories' do
+    pending
+  end
+
+  step 'I can assign budget limits to categories' do
+    pending
   end
 
   step 'I can read only the request of someone else' do

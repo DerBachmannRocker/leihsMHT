@@ -3,6 +3,9 @@ Feature: Templates
   Background:
     Given the basic dataset is ready
 
+  # This scenario doesn't make sense anymore.
+  # It's a mix between admin categories and inspector templates
+  # Before the refactor was related to Barbara
   @templates
   Scenario: Create a Template Category
     Given I am Hans Ueli

@@ -81,7 +81,7 @@ Feature: Description of roles
     And I navigate to procurement
     Then I can create a budget period
     And I can create a category
-    And I can assign inspectory to categories
+    And I can assign inspectors to categories
     And I can assign budget limits to categories
     And I can add requesters
     And I can add admins
