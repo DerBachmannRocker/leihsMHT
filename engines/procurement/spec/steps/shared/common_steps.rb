@@ -53,8 +53,8 @@ module CommonSteps
         user: user,
         budget_period: current_budget_period
       }
-      if value['group'] == 'inspected' or not @group.nil?
-        h[:group] = @group
+      if value['category'] == 'inspected' or not @category.nil?
+        h[:category] = @category
       end
 
       n.times do
@@ -274,7 +274,7 @@ module CommonSteps
                           categories.first
                         end
 
-      link_on_dropdown(@other_category.to_s).click
+      link_on_dropdown(@other_category.name).click
     end
 
     @changes = {
@@ -311,17 +311,17 @@ module CommonSteps
     find '.flash .alert-danger', match: :first
   end
 
-  step 'I see all groups' do
+  step 'I see all main categories' do
     within '.panel-success .panel-body' do
-      Procurement::Group.all.each do |group|
-        find '.row', text: group.name
+      Procurement::MainCategory.all.each do |category|
+        find '.row', text: category.name
       end
     end
   end
   # not alias, but same implementation
-  step 'I see all groups listed' do
-    step 'I see all groups'
-  end
+  # step 'I see all main categories listed' do
+  #   step 'I see all main categories'
+  # end
 
   step 'I see the amount of requests listed' do
     within '#filter_target' do
@@ -399,16 +399,16 @@ module CommonSteps
     step 'I press on the plus icon of a sub category'
   end
 
-  step ':count groups exist' do |count|
+  step ':count main categories exist' do |count|
     n = case count
         when 'several'
             3
         else
             count.to_i
         end
-    @groups = []
+    @main_categories = []
     n.times do
-      @groups << FactoryGirl.create(:procurement_group)
+      @main_categories << FactoryGirl.create(:procurement_main_category)
     end
   end
 
@@ -443,7 +443,7 @@ module CommonSteps
       user: @current_user,
       budget_period: budget_period
     }
-    h[:group] = @group if @group
+    h[:category] = @category if @category
 
     n = 5
     n.times do

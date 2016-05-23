@@ -165,7 +165,7 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
     And there is a future budget period
     And there is a budget period which has already ended
     And following requests exist for the current budget period
-      | quantity | user  | group     |
+      | quantity | user  | category  |
       | 3        | Roger | inspected |
     When I navigate to the requests form of Roger
     Then I can not move any request to the old budget period
@@ -180,7 +180,7 @@ Feature: Inspection (state-behaviour described in seperate feature-file)
     And several categories exist
     And the current budget period is in inspection phase
     And following requests exist for the current budget period
-      | quantity | user  | group     |
+      | quantity | user  | category  |
       | 3        | Roger | inspected |
     When I navigate to the requests form of Roger
     And I move a request to the other category where I am not inspector

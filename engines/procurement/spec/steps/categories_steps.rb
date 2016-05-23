@@ -187,12 +187,6 @@ steps_for :categories do
       .to eq 0
   end
 
-  step ':n main categories exist' do |n|
-    n.to_i.times do
-      FactoryGirl.create :procurement_main_category
-    end
-  end
-
   step 'each main category has two sub categories' do
     Procurement::MainCategory.all.each do |main_category|
       2.times do

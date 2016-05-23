@@ -75,7 +75,7 @@
                 = render partial: 'procurement/requests/progress_radial', locals: {used: total_price, max: budget_limit_amount}
 
           - requests.each do |request|
-            %a.list-category-item.row{href: category_budget_period_user_requests_path(request.category, request.budget_period, request.user, request_id: request.id), data: {request_id: request.id}}
+            %a.list-group-item.row{href: category_budget_period_user_requests_path(request.category, request.budget_period, request.user, request_id: request.id), data: {request_id: request.id}}
               .col-sm-2
                 = request.article_name
               .col-sm-2

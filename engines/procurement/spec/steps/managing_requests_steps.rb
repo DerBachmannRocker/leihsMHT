@@ -246,10 +246,19 @@ steps_for :managing_requests do
     find(".list-group-item[data-request_id='#{@request.id}']").click
   end
 
-  step 'I press on a category' do
-    @category = Procurement::TemplateCategory.all.sample
-    within '.panel-success > .panel-body' do
-      find('.panel-heading', text: @category.name).click
+  step 'I press on a main category' do
+    @main_category = Procurement::MainCategory.all.sample
+    find('h5', text: @main_category.name).click
+  end
+
+  step 'I press on a sub category' do
+    @category = @main_category.categories.sample
+    find('.panel-heading', text: @category.name).click
+  end
+
+  step 'I see the sub categories of this main category' do
+    @main_category.categories.each do |category|
+      find('.panel-heading', text: category.name)
     end
   end
 
