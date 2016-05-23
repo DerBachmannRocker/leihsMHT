@@ -208,16 +208,46 @@ steps_for :categories do
     expect(@category.reload.requests.count).to eq 3
   end
 
-  step 'I delete the main/sub category' do
+  step 'there exist templates for this sub category' do
+    3.times do
+      FactoryGirl.create(:procurement_template, category: @category)
+    end
+    expect(@category.reload.templates.count).to eq 3
+  end
+
+  step 'I can not delete the main category' do
+    @main_category ||= @category.main_category
+    within(:xpath, "//input[@value='#{@main_category.name}']/ancestor::" \
+                   "div[contains(@class, 'panel-heading')]") do
+      expect(page).not_to have_selector 'i.fa-minus-circle'
+    end
+  end
+
+  step 'I delete the main category' do
     group_line = find('table tbody tr', text: @category.name)
     group_line.find('.dropdown-toggle').click
     # accept_alert { }
     group_line.click_on _('Delete')
   end
 
+  step 'I delete the sub category' do
+    within(:xpath, "//input[@value='#{@category.main_category.name}']/ancestor::" \
+                   "div[contains(@class, 'panel-heading')]") do
+      current_scope.click
+
+      within(:xpath, "//input[@value='#{@category.name}']/ancestor::tr") do
+        find('i.fa-minus-circle').click
+      end
+    end
+  end
+
   step 'I am asked whether I really want to delete' do
     alert = page.driver.browser.switch_to.alert
     alert.accept
+  end
+
+  step 'I am asked whether I really want to delete the sub category' do
+    pending
   end
 
   step 'the sub category disappears from the list' do
@@ -262,7 +292,7 @@ steps_for :categories do
   end
 
   step 'the new category has not been created' do
-    # FIXME split into separate steps
+    # FIXME: split into separate steps
     expect(Procurement::MainCategory.exists?).to be false
     expect(Procurement::Category.exists?).to be false
   end

@@ -24,12 +24,14 @@ module Procurement
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
       def csv_columns(current_user)
         show_all = (not budget_period.in_requesting_phase?) \
                       or category.inspectable_or_readable_by?(current_user)
         { _('Budget period') => budget_period,
           _('Main category') => category.main_category.name,
-          _('Sub category') => category.name, _('Requester') => user,
+          _('Sub category') => category.name,
+          _('Requester') => user,
           _('Organisation unit') => organization.name_with_parent,
           _('Article / Project') => article_name,
           _('Article nr. / Producer nr.') => article_number,
@@ -44,9 +46,13 @@ module Procurement
           format('%s / %s', _('Replacement'), _('New')) => \
                                   replacement ? _('Replacement') : _('New'),
           _('Receiver') => receiver,
-          _('Point of Delivery') => location_name, _('Motivation') => motivation,
-          _('Inspection comment') => show_all ? inspection_comment : nil }
+          _('Point of Delivery') => location_name,
+          _('Motivation') => motivation,
+          _('Inspection comment') => show_all ? inspection_comment : nil
+        }
       end
+      # rubocop:enable Metrics/MethodLength
+
     end
 
   end

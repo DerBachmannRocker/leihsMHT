@@ -75,19 +75,19 @@ Feature: Procurement Categories
   Scenario: Deleting a main category with sub categories containing requests not possible
     Given I am Hans Ueli
     And there exists a main category
-    And there exists a sub category
-    And requests exist for this sub category
+    And there exists a sub category for this main category
+    And there exist requests for this sub category
     When I navigate to the categories page
     Then I can not delete the main category
 
   @categories
   Scenario: Deleting a sub category without existing requests
     Given I am Hans Ueli
-    And there exists a sub category
-    And there do not exist any requests for this sub category
+    And there exists a sub category without any requests
     And there exist templates for this sub category
     When I navigate to the categories page
     And I delete the sub category
+    # really ?? not enough with red background and save button ?
     Then I am asked whether I really want to delete the sub category
     When I say yes
     Then the sub category disappears

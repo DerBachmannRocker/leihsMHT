@@ -21,21 +21,26 @@ module DatasetSteps
     end
   end
 
-  step 'there exists a :level category' do |level|
-    @category = case level
-                when 'main'
-                  Procurement::MainCategory.first || \
-                  FactoryGirl.create(:procurement_main_category)
-                when 'sub'
-                  Procurement::Category.first || \
-                  FactoryGirl.create(:procurement_category)
-                else
-                  raise
-                end
+  step 'there exists a main category' do
+    @main_category = Procurement::MainCategory.first || \
+                     FactoryGirl.create(:procurement_main_category)
   end
+  # alias
   step 'a main category exists' do
     step 'there exists a main category'
   end
+
+  step 'there exists a sub category' do
+    @category = Procurement::Category.first || \
+                FactoryGirl.create(:procurement_category)
+  end
+
+  step 'there exists a sub category for this main category' do
+    @category = @main_category.categories.first || \
+                FactoryGirl.create(:procurement_category,
+                                   main_category: @main_category)
+  end
+
   step "a category which I'm inspector exists" do
     step 'there exists a sub category'
     unless @category.inspectors.include? @current_user
