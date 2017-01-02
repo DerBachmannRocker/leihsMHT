@@ -1,39 +1,37 @@
-#You should *not* use this LDAP.yml
-#Please read the Leihs LDAP guide
-
-# configuration for the LDAP server
-# host: where to reach the DRb server (used by application processes to contact the server)
-# port: which port the server should listen on
-
+# encoding: utf-8
+# This file should be saved in UTF-8 format, as to be able to have umlauts (ä,ö,ü) inside group/usernames below
 production:
-  host: ldapsrv.bfh.ch
+  host: serverglobal03.mhtnet.mh-trossingen.de
   port: 636
+  #port: 389
+  #encryption: none
   encryption: simple_tls
-  base: dc=bfh,dc=ch
-  log_file: log/ldap_server.log
-  log_level: warn
-  search_field: uid
-  bind_dn: -----
-  bind_pwd: -----
+  log_file: ./log/ldap_server.log
+  log_level: DEBUG
+  master_bind_dn: CN=LeihsLdapEnumUser,OU=NonHumanUsers,OU=mht_Users,DC=mhtnet,DC=mh-trossingen,DC=de
+  master_bind_pw: I85+72%dOU3b19l
+  base_dn: OU=HumanUsers,OU=mht_Users,DC=mhtnet,DC=mh-trossingen,DC=de
+  unique_id_field: sAMAccountName
+  search_field: sAMAccountName
 
-#test:
-test:
-  host: hostname
-  port: port_number
-  encryption: simple_tls
-  base: dc=xyz,dc=abcc,dc=ch
-  log_file: log/ldap_server.log
-  log_level: warn
-  search_field: userprincipalname
- 
+  #set this to true if you want to enable looking inside nested groups for user membership of
+  #the groups mentioned below.
+  #example: User is member of group1, group1 is member of group2, admin_dn is set to group2
+  #true or false
+  #Default: false
+  look_in_nested_groups_for_membership: true
 
-#dev:
-development:
-  host: ldapsrv.bfh.ch
-  port: 636
-  encryption: simple_tls
-  base: dc=bfh,dc=ch
-  log_file: log/ldap_server.log
-  log_level: warn
-  search_field: cn
-  bind_dn: cn=$username,ou=srv-account,dc=bfh,dc=ch	
+  #Active Directory handles Primary Group membership differently than other groups
+  #If you want to use the primary group of some users, set this to 'true'
+  #If you are not sure, set this to 'false'  
+  look_for_primary_group_membership_ActiveDirectory: false
+  #editJan: set to false
+
+  #group of normal users with permission to log into Leihs. Optional. Can be left blank to accept all LDAP users.
+  normal_users_dn: CN=ACL_Leihs_Login_NormalUsers,OU=Permissions,OU=Groups,DC=mhtnet,DC=mh-trossingen,DC=de
+  #normal_users_dn: CN=Domänen-Benutzer,CN=Users,DC=mhtnet,DC=mh-trossingen,DC=de
+  
+  #group of leihs admins. users may be member of normal_users_dn at the same time
+  #admin_dn: CN=Domänen-Benutzer,CN=Users,DC=mhtnet,DC=mh-trossingen,DC=de
+  admin_dn: CN=ACL_Leihs_Login_Admins,OU=Permissions,OU=Groups,DC=mhtnet,DC=mh-trossingen,DC=de
+  #admin_dn: CN=grpLeihsAdmins,OU=Users,OU=Groups,DC=mhtnet,DC=mh-trossingen,DC=de
