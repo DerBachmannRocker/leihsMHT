@@ -184,7 +184,7 @@ class LdapHelper
     if ldap.bind
       return ldap
     else
-      logger = self.get_logger()
+      logger = LdapHelper::get_logger()
       logger.error "ERROR: Can't bind to LDAP server #{@host} " \
                    "as user '#{username}'. " \
                    'Wrong bind credentials or encryption parameters?' \
@@ -205,8 +205,8 @@ class Authenticator::LdapAuthenticationController \
     #exceptions, checks and log entries by itself. This is much safer, in case LdapHelper is instantiated 
     #outside a begin / rescue block
 
-    _helper = LdapHelper.new
-    unless _helper.configIsOk == true
+    myLdaphelper = LdapHelper.new
+    unless myLdaphelper.configIsOk == true
       flash[:error] = \
        _('You will not be able to log in because this leihs server ' \
           'is not configured correctly. Contact your leihs system administrator.')
@@ -220,9 +220,9 @@ class Authenticator::LdapAuthenticationController \
   # @param login [String] The login of the user you want to create
   # @param email [String] The email address of the user you want to create
   def create_user(login, email, firstname, lastname)
-    ldaphelper = LdapHelper.new
+    myLdaphelper = LdapHelper.new
     logger = LdapHelper::get_logger()
-    unless ldaphelper.configIsOk == true
+    unless myLdaphelper.configIsOk == true
       return false
     end
     
@@ -245,9 +245,9 @@ class Authenticator::LdapAuthenticationController \
   # @param user_data [Net::LDAP::Entry] The LDAP entry (it could also just be
   # a hash of hashes and arrays that looks like a Net::LDAP::Entry) of that user
   def update_user(user, user_data)
-    ldaphelper = LdapHelper.new
+    myLdaphelper = LdapHelper.new
     logger = LdapHelper::get_logger()
-    unless ldaphelper.configIsOk == true
+    unless myLdaphelper.configIsOk == true
       return
     end
     
@@ -255,7 +255,7 @@ class Authenticator::LdapAuthenticationController \
     # for user images to appear, based on the unique ID. Example for the format:
     # http://www.hslu.ch/portrait/{:id}.jpg
     # {:id} will be interpolated with user.unique_id there.
-    user.unique_id = user_data[ldaphelper.unique_id_field.to_s].first.to_s
+    user.unique_id = user_data[myLdaphelper.unique_id_field.to_s].first.to_s
     user.firstname = user_data['givenname'].first.to_s
     user.lastname = user_data['sn'].first.to_s
     unless user_data['telephonenumber'].blank?
@@ -272,7 +272,7 @@ class Authenticator::LdapAuthenticationController \
       user.zip = user_data['postalcode'].first.to_s
     end
 
-    admin_dn = ldaphelper.admin_dn
+    admin_dn = myLdaphelper.admin_dn
     unless admin_dn.blank?
       in_admin_group = false
       begin
@@ -357,7 +357,7 @@ class Authenticator::LdapAuthenticationController \
   end
   
   #Subroutine of user_is_member_of_ldap_group(user_data, group_dn)
-   def user_is_member_of_ldap_group_method_primary(user_data, group_dn, ldap, ldaphelper, logger)
+   def user_is_member_of_ldap_group_method_primary(user_data, group_dn, ldap, myLdaphelper, logger)
     #Look at the primary group of the user (Default in AD: Domain-Users)
     #This is one plain Integer attribute of the user, representing the primary group id.
     #Completely different mechanism than the usual groups handled with the other methods.
@@ -403,7 +403,7 @@ class Authenticator::LdapAuthenticationController \
   end
 
   #Subroutine of user_is_member_of_ldap_group(user_data, group_dn)
-  def user_is_member_of_ldap_group_method_nested(user_data, group_dn, ldap, ldaphelper, logger)
+  def user_is_member_of_ldap_group_method_nested(user_data, group_dn, ldap, myLdaphelper, logger)
     #New method of searching for group membership, using special LDAP syntax
     #Returns true for simple group membership *and* nested group membership
     #Example for nested groups:
@@ -423,7 +423,7 @@ class Authenticator::LdapAuthenticationController \
     #                 );
     
     #construct a filter from string, according to RFC2254 syntax. Returns Filter object, needed for search 
-    nested_group_filter = Net::LDAP::Filter.construct("member:#{ldaphelper.LDAP_MATCHING_RULE_IN_CHAIN}:=#{user_data.dn}")
+    nested_group_filter = Net::LDAP::Filter.construct("member:#{myLdaphelper.LDAP_MATCHING_RULE_IN_CHAIN}:=#{user_data.dn}")
     #nested_group_filter example value: (member:1.2.840.113556.1.4.1941:=CN=leihstest,OU=Static,OU=HumanUsers,OU=mht_Users,DC=mhtnet,DC=mh-trossingen,DC=de)
   
     #### Parameters ###
@@ -431,7 +431,7 @@ class Authenticator::LdapAuthenticationController \
     #search for all (nested and simple) group memberships of the user EXCLUDING the primary group
     #use LDAP_return_only_DN, because we do not want other types of results to be returned
     #(possibly not needed, but included to match example above)
-    nestedGroupSearchResult = ldap.search(base: group_dn, filter: nested_group_filter, attrs: ldaphelper.LDAP_return_only_DN)
+    nestedGroupSearchResult = ldap.search(base: group_dn, filter: nested_group_filter, attrs: myLdaphelper.LDAP_return_only_DN)
   
     unless nestedGroupSearchResult
       logger.error("LDAP search for group returned NIL result (while looking for nested groups), which should not happen. Probably the following group does not exist in LDAP. Check your LDAP config file." \
@@ -449,7 +449,7 @@ class Authenticator::LdapAuthenticationController \
   end
   
   #Subroutine of user_is_member_of_ldap_group(user_data, group_dn)
-  def user_is_member_of_ldap_group_method_simple(user_data, group_dn, ldap, ldaphelper, logger)
+  def user_is_member_of_ldap_group_method_simple(user_data, group_dn, ldap, myLdaphelper, logger)
     #old method of search. Ignores nested groups
     #This is executed if the new method returns no result and or is disabled
     #I kept this method of search in, because I can only test with Active Directory and I do not want to break
@@ -532,17 +532,17 @@ class Authenticator::LdapAuthenticationController \
 
     #checks passed. create user / log in
     begin
-      ldaphelper = LdapHelper.new
-      unless ldaphelper.configIsOk == true
+      myLdaphelper = LdapHelper.new
+      unless myLdaphelper.configIsOk == true
         return
       end
 
-      if not ldaphelper.bind(bind_dn, password)
+      if not myLdaphelper.bind(bind_dn, password)
         flash[:error] = _('Invalid username/password')
         return
       end 
       
-      u = User.find_by_unique_id(ldap_user[ldaphelper.unique_id_field.to_s])
+      u = User.find_by_unique_id(ldap_user[myLdaphelper.unique_id_field.to_s])
       unless u
         logger.info ("User was not found in local DB. Creating user with data from LDAP: #{username}")
         u = create_user(username, email, firstname, lastname)
@@ -555,6 +555,7 @@ class Authenticator::LdapAuthenticationController \
         end
       end
 
+	  logger.debug("entering update_user")
       update_user(u, ldap_user)
       if u.save
         self.current_user = u
@@ -569,7 +570,8 @@ class Authenticator::LdapAuthenticationController \
       end
     rescue Exception => e
       logger.error("Unexpected exception in create_and_login_from_ldap_user:" \
-                  "Exception: #{e}")
+                  "Exception: #{e}" \
+                   "#{e.backtrace.slice(1,500)}...")
       flash[:error] = \
       _("Unable to login. Unexpected error. Please contact your leihs system administrator.")
     end
@@ -580,11 +582,11 @@ class Authenticator::LdapAuthenticationController \
     @preferred_language = Language.preferred(request.env['HTTP_ACCEPT_LANGUAGE'])
     
     #this will validate the LDAP config file. informing the user of the result is handled by validate_configuration()
-    ldaphelper = LdapHelper.new
+    myLdaphelper = LdapHelper.new
     
     logger = LdapHelper::get_logger()
     
-    if request.post? and (ldaphelper.configIsOk == true)
+    if request.post? and (myLdaphelper.configIsOk == true)
       username = params[:login][:user]
       password = params[:login][:password]
       if username == '' || password == ''
@@ -592,21 +594,21 @@ class Authenticator::LdapAuthenticationController \
       else
         logger.info("LDAP user trying to log in: #{username}")
         begin
-          ldap = ldaphelper.bind
+          ldap = myLdaphelper.bind
 
           if ldap
             users = \
               ldap.search \
-                base: ldaphelper.base_dn,
+                base: myLdaphelper.base_dn,
                 filter: \
-                  Net::LDAP::Filter.eq(ldaphelper.search_field, "#{username}")
+                  Net::LDAP::Filter.eq(myLdaphelper.search_field, "#{username}")
 
             # TODO: remove 3rd level of block nesting
             # rubocop:disable Metrics/BlockNesting
             if users.size == 1
               user_data = users.first
-              normal_users_dn = ldaphelper.normal_users_dn
-              admin_users_dn = ldaphelper.admin_dn
+              normal_users_dn = myLdaphelper.normal_users_dn
+              admin_users_dn = myLdaphelper.admin_dn
               
               user_allowed = false
               #Normal users group member? 
@@ -646,7 +648,7 @@ class Authenticator::LdapAuthenticationController \
           end
         rescue Net::LDAP::LdapError
           flash[:error] = _("Couldn't connect to LDAP server: " \
-                            "#{ldaphelper.host}:#{ldaphelper.port}")
+                            "#{myLdaphelper.host}:#{myLdaphelper.port}")
         end
       end
     else
