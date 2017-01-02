@@ -478,6 +478,7 @@ class Authenticator::LdapAuthenticationController \
 
   def create_and_login_from_ldap_user(ldap_user, username, password)
     logger = LdapHelper::get_logger()
+    logger.debug("Logger initialized")
     
     begin  
       #check for mandatory user fields
