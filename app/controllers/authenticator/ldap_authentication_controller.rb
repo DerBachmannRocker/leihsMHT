@@ -267,6 +267,7 @@ class Authenticator::LdapAuthenticationController \
       user.address = user_data['streetaddress'].first.to_s
     end
     user.city = user_data['l'].first.to_s unless user_data['l'].blank?
+	user.badge_id = user_data['employeeID'].first.to_s unless user_data['employeeID'].blank?
     user.country = user_data['c'].first.to_s unless user_data['c'].blank?
     unless user_data['postalcode'].blank?
       user.zip = user_data['postalcode'].first.to_s
