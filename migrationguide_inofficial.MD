@@ -256,7 +256,7 @@ leihsversions=(
 'export leihsbranch="4.8.0";export indexnum="08"'
 'export leihsbranch="4.9.0";export indexnum="09"'
 'export leihsbranch="4.10.0";export indexnum="10"'
-...
+...and the rest
 ```
 ## Cloning
 Run the script again to create a copy of each Leihs version locally. This will take a bit.
@@ -431,17 +431,64 @@ leihs                      : ok=138  changed=57   unreachable=0    failed=0
 # Upgrade to latest stable 4.19.0
 
 From here on, I encountered no errors. The deployment playbooks just worked, no fixes were needed anymore.
+* v4.11.0
 ```bash
 cd ~/ansibledeploy/11-my-leihsV4.11.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
 leihs                      : ok=138  changed=56   unreachable=0    failed=0 
 ```
+* v4.12.0
 ```bash
 cd ~/ansibledeploy/12-my-leihsV4.12.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=138  changed=56   unreachable=0    failed=0   
 ```
+* v4.13.0
+```bash
+cd ~/ansibledeploy/13-my-leihsV4.13.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+leihs                      : ok=138  changed=56   unreachable=0    failed=0   
+```
+* v4.14.2
+```bash
+cd ~/ansibledeploy/14-my-leihsV4.14.2/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+```
+* v4.15.0
+```bash
+cd ~/ansibledeploy/15-my-leihsV4.15.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+```
+* v4.16.1
+```bash
+cd ~/ansibledeploy/16-my-leihsV4.16.1/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+```
+* v4.17.0
+```bash
+cd ~/ansibledeploy/17-my-leihsV4.17.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+```
+* v4.18.0
+```bash
+cd ~/ansibledeploy/18-my-leihsV4.18.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+```
+* v4.19.0
+```bash
+cd ~/ansibledeploy/19-my-leihsV4.19.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+```
+... and you are done!
 
 # Additional hints for fixing errors
 You will probably not encounter these errors, but they caused me 3 days of work / reverse engineering. So I kept this information here for future reference, just in case. Do not apply any of the fixes listed below, except you encounter the errors described.
