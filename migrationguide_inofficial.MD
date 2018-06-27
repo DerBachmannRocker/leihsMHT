@@ -4,16 +4,15 @@ The steps below were tested in practice in June 2018 on Debian 9.4 as both Ansib
 [here](https://github.com/leihs/leihs-instance/blob/master/GUIDE.md)
 In doing so I encountered a lot of unanswered questions and lacking documentation. Therefore I hereby document the steps I did to upgrade my Leihs production server.
 There is no guarantee the information provided here is correct or particularly elegant. It is just the way I did things. On the positive side, what I did actually lead to a working upgraded Leihs instance.
-Unfortunately, to my knowledge, the only foolproof way to upgrade to the current stable release is to install any and all minor version increments (ignorning smaller patch releases). In theory you could probably skip a huge number of versions, but there is no official documentation on what is tested and safe to skip. Initially following the official upgrade guide, I stared with v4.11 and encountered problems with wrongly named DB columns and missing function names. Therefore I bit the bullet and installed the huge list of version increments until I reached v4.19.0. I wrote a small script that makes this a bit easier. The script downloads each version into a separate directory, which makes it possible to test out the deployment on a non production machine, fix any errors you encounter specific to each version, and then play back the whole upgrade process in a short time on your production machine.
+Unfortunately, to my knowledge, the **only foolproof way** to upgrade to the current stable release is to install each and every minor version increments (ignorning smaller patch releases). In theory you could probably skip a huge number of versions, but there is no official documentation on what is tested and safe to skip. Initially following the official upgrade guide, I started with v4.11 and encountered problems with wrongly named DB columns and missing function names. Therefore I bit the bullet and installed the complete list of version increments, documenting each step, until I reached v4.19.0. I wrote a small script that makes the cloing part a bit easier. The script downloads each version into a separate directory, which makes it possible to test out the deployment on a non production machine, fix any errors you encounter specific to each version, and then play back the whole upgrade process in a short time on your production machine.
 
 I would probably have had much less trouble had I found and read the release notes
 https://github.com/leihs/leihs/blob/master/config/releases.yml
-Leihs supports Debian 9 officially since v4.6
-Please read the whole list of release notes before you try to install Leihs on anything than Debian 9.4
+Please read the whole list of release notes before you try to install Leihs on anything than Debian 9.4 (which is what I tested the process with)
 
-In the original upgrade guide you were instructed to first install Leihs from scratch. We will do this as well, but we will specify a specific Leihs version to clone.
+In the original upgrade guide you were instructed to first install Leihs from scratch. We will do this as well, but we will specify a specific Leihs version to clone (v4.0.0)
 
-Warning: Do not upgrade your Leihs v4 installation to a higher version until after migration is done!
+***Warning***: Do not upgrade your Leihs v4 installation to a higher version until after migration is done!
 You need to install v4.00, because later versions changed column names in the DB and function names in the code (and the migration scripts were not updated to take care of this).
 
 Good luck!
@@ -22,6 +21,8 @@ DerBachmannRocker
 ## Prerequisites
 Ensure your old `v3` server is at version [3.45.1](https://github.com/leihs/leihs/releases/tag/3.45.1). For this follow the official upgrade instructions described [here](https://github.com/leihs/leihs/wiki/Upgrades).
 Please make sure you have root access via SSH to both the v3 and v4 server, using public cert/key pair credentials. You need to be able to connect from your Ansible ("control") machine to both hosts with SSH, without using a password.
+* Debian Version of Leihs v3 Server
+I tested this process with Debian 8.10
 
 ## Ansible Setup
 * Create Ansible directory
