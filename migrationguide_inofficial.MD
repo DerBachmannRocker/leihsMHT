@@ -385,6 +385,35 @@ ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
 ```
 PLAY RECAP
+leihs                      : ok=140  changed=58   unreachable=0    failed=0   
+```
+
+# Upgrade to 4.8.0
+* Fix error during upgrade to v4.8.0 TASK [ansible : install ansible via pip]
+```bash
+cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./08-my-leihsV4.8.0/deploy/roles/ansible/tasks/install_ansible.yml
+```
+* Run the playbook
+```bash
+cd ~/ansibledeploy/08-my-leihsV4.8.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+```
+```
+PLAY RECAP
+```
+
+# Upgrade to 4.9.0
+* Fix error during upgrade to v4.9.0 TASK [ansible : install ansible via pip]
+```bash
+cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./09-my-leihsV4.9.0/deploy/roles/ansible/tasks/install_ansible.yml
+```
+* Run the playbook
+```bash
+cd ~/ansibledeploy/09-my-leihsV4.9.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+```
+```
+PLAY RECAP
 ```
 
 # Additional hints for fixing errors
