@@ -237,10 +237,10 @@ leihs-v3                   : ok=8    changed=7    unreachable=0    failed=0
 ## LDAP
 You will need to copy over your LDAP.yml from v3 to v4 for logins to work (if you do use LDAP). Local users should work immediatelly. All contracts, pictures, users, etc. will have been carried over.
 
-# Upgrading Leihs to v4.6.0
-Now the next step will be to upgrade our Leihs instance from v4.0.0 to a version that is officially compatible with Debian 9.
+# Upgrading Leihs to v4.10.0
+Now the next step will be to upgrade our Leihs instance from v4.0.0 to a version that is compatible with Debian 9. This *should* be v4.6.0, but in reality v4.10.0 is the first version that truly "just works".
 
-## Commenting in other versions
+## Commenting-in other versions
 Modifify leihsclone.sh to look like so:
 ```bash
 ...
@@ -252,10 +252,10 @@ leihsversions=(
 'export leihsbranch="4.4.0";export indexnum="04"'
 'export leihsbranch="4.5.1";export indexnum="05"'
 'export leihsbranch="4.6.0";export indexnum="06"'
-#'export leihsbranch="4.7.3";export indexnum="07"'
-#'export leihsbranch="4.8.0";export indexnum="08"'
-#'export leihsbranch="4.9.0";export indexnum="09"'
-#'export leihsbranch="4.10.0";export indexnum="10"'
+'export leihsbranch="4.7.3";export indexnum="07"'
+'export leihsbranch="4.8.0";export indexnum="08"'
+'export leihsbranch="4.9.0";export indexnum="09"'
+'export leihsbranch="4.10.0";export indexnum="10"'
 ...
 ```
 ## Cloning
@@ -322,7 +322,7 @@ PLAY RECAP
 leihs                      : ok=137  changed=62   unreachable=0    failed=0
 ```
 
-# Upgrade to 4.4.0
+## Upgrade to 4.4.0
 * Fix error during upgrade to v4.4.0 and v4.5.0 TASK [upgrade pyopenssl package]
 * Fix: same as above. Files have not changed
 Copy the fixed files
@@ -344,7 +344,7 @@ ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP 
 leihs                      : ok=141  changed=61   unreachable=0    failed=0
 ```
-# Upgrade to 4.5.1
+## Upgrade to 4.5.1
 * Hint: After Installation of 4.5.1 you can see the version number of Leihs on the footer of the page
 * Run the playbook
 ```bash
@@ -356,9 +356,9 @@ PLAY RECAP
 leihs                      : ok=141  changed=60   unreachable=0    failed=0 
 ```
 
-# Upgrade to 4.6.0
+## Upgrade to 4.6.0
 * Fix error during upgrade to v4.6.0 TASK [ansible : install ansible via pip]
-v4.6 officially supports Debian 9. We still get the pip crashes, though
+v4.6 supposedly officially supports Debian 9. We still get the pip crashes, though
 ```bash
 #for v4.6.0 just install_ansible.yml needs fixup. Other file was fixed bei Leihs devs
 cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./06-my-leihsV4.6.0/deploy/roles/ansible/tasks/install_ansible.yml
@@ -373,7 +373,7 @@ PLAY RECAP
 leihs                      : ok=140  changed=60   unreachable=0    failed=0
 ```
 
-# Upgrade to 4.7.3
+## Upgrade to 4.7.3
 * Fix error during upgrade to 4.7.3 TASK [ansible : install ansible via pip]
 ```bash
 cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./07-my-leihsV4.7.3/deploy/roles/ansible/tasks/install_ansible.yml
@@ -388,7 +388,7 @@ PLAY RECAP
 leihs                      : ok=140  changed=58   unreachable=0    failed=0   
 ```
 
-# Upgrade to 4.8.0
+## Upgrade to 4.8.0
 * Fix error during upgrade to v4.8.0 TASK [ansible : install ansible via pip]
 ```bash
 cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./08-my-leihsV4.8.0/deploy/roles/ansible/tasks/install_ansible.yml
@@ -400,9 +400,10 @@ ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
 ```
 PLAY RECAP
+leihs                      : ok=140  changed=57   unreachable=0    failed=0  
 ```
 
-# Upgrade to 4.9.0
+## Upgrade to 4.9.0
 * Fix error during upgrade to v4.9.0 TASK [ansible : install ansible via pip]
 ```bash
 cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./09-my-leihsV4.9.0/deploy/roles/ansible/tasks/install_ansible.yml
@@ -413,6 +414,32 @@ cd ~/ansibledeploy/09-my-leihsV4.9.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
 ```
+PLAY RECAP
+leihs                      : ok=140  changed=57   unreachable=0    failed=0   
+```
+
+## Upgrade to 4.10.0
+* Just run the playbook. No fix needed.
+```bash
+cd ~/ansibledeploy/10-my-leihsV4.10.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+```
+```
+PLAY RECAP
+leihs                      : ok=138  changed=57   unreachable=0    failed=0   
+```
+# Upgrade to latest stable 4.19.0
+
+From here on, I encountered no errors. The deployment playbooks just worked, no fixes were needed anymore.
+```bash
+cd ~/ansibledeploy/11-my-leihsV4.11.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+PLAY RECAP
+leihs                      : ok=138  changed=56   unreachable=0    failed=0 
+```
+```bash
+cd ~/ansibledeploy/12-my-leihsV4.12.0/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
 ```
 
