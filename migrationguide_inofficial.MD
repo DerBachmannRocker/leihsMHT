@@ -173,14 +173,15 @@ do
 done
 ```
 # Clone the Leihs v4.0.0 git repository
-Because all other versions are commented out, the script will only download v4.0.0 for now and set up symlinks to your host config files.
+Because all other versions are commented out, the script will only download v4.0.0 for now and set up symlinks to your host config files you created earlier.
+```bash
 cd ~/ansibledeploy
 ./leihsclone.sh
-
+```
 # Fixing errors during migration
 Before you run your migration attempt, you should go through the following hints.
 
-* Init-Script for rbenv on V3 server needed
+## Init-Script for rbenv on V3 server needed
 You need to have `rbenv` installed on your leihsv3 server
 ```
 apt-get install rbenv
@@ -190,15 +191,16 @@ Create this init script with the following command on the Leihs v3 Server:
 ```
 echo 'eval "$(rbenv init -)"' > /etc/profile.d/rbenv-load.sh
 ```
-* Message from the devs
+## Message from the devs
 
 **IMPORTANT**: Do not change the content of `deploy/all.yml`. It does not need to be modified.
 
-* Prevent openssl errors during ruby compilation runs
+## Prevent openssl errors during ruby compilation runs
 Debian 9 introduced a new version for OpenSSL as the default package, which is incompatible with Ruby 2.3.3 during compilation. OpenSSL gets omited and later causes errors.
-Fix: Replace the reference to the default package in Ansible task file (otherwise the wrong package will be reinstalled during the run)
+
+* Fix: Replace the reference to the default package in Ansible task file (otherwise the wrong package will be reinstalled during the run)
 This simple fix is done automatically by leihsclone.sh
-Manual method / check success:
+* Manual method / check success:
 edit ~/ansibledeploy/00-my-leihsV4.0.0/deploy/roles/ruby-install/tasks/main.yml
 ```
 old: libssl-dev
@@ -215,22 +217,24 @@ ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 Depending on your console-setup, the resulting error-output might contain many lines, delimited by "\n" strings. Copy/Paste and replace these with your text editor of choice for easier readability.
 
 Success:
+```
 PLAY RECAP
 leihs : ok=137  changed=91   unreachable=0    failed=0
-
+```
 If you scucceeded, you can continue on to the actual data migration.
 
 # Data migration from v3 to v4
-Finally, export your data from your `v3` server and import it into the new server. I did not encounter any more errors during this playbook after I fixed every problem with the install playbook. 
+Finally, export your data from your `v3` server and import it into the new server. I did not encounter any more errors with the migration playbook, after I fixed every problem with the install playbook. 
 ```
 cd ~/ansibledeploy/00-my-leihsV4.0.0/deploy
 ansible-playbook ./import-v3-into-v4_play.yml -i ../my-inventory/hosts -v
 ```
 Success:
+```
 PLAY RECAP
 leihs                      : ok=185  changed=89   unreachable=0    failed=0   
 leihs-v3                   : ok=8    changed=7    unreachable=0    failed=0   
-
+```
 ## LDAP
 You will need to copy over your LDAP.yml from v3 to v4 for logins to work (if you do use LDAP). Local users should work immediatelly. All contracts, pictures, users, etc. will have been carried over.
 
@@ -239,7 +243,6 @@ Now the next step will be to upgrade our Leihs instance from v4.0.0 to a version
 
 ## Commenting in other versions
 Modifify leihsclone.sh to look like so:
-(v4.6.0 was the first version to officially support Debian 9)
 ```bash
 ...
 leihsversions=(
@@ -269,8 +272,10 @@ cd ~/ansibledeploy
 cd ~/ansibledeploy/01-my-leihsV4.1.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
+```
 PLAY RECAP 
 leihs                      : ok=136  changed=57   unreachable=0    failed=0   
+```
 Check for errors and continue with the next version
 
 ## Upgrade to 4.2.0"
@@ -279,9 +284,10 @@ Check for errors and continue with the next version
 cd ~/ansibledeploy/02-my-leihsV4.2.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
+```
 PLAY RECAP 
 leihs                      : ok=136  changed=57   unreachable=0    failed=0
-
+```
 ## Upgrade to 4.3.1
 * Fix error during upgrade to v4.3.1 TASK [ansible : install ansible via pip]
 ```
@@ -289,9 +295,9 @@ fatal: [leihs]: FAILED! => {"changed": true, "cmd": "set -eux
  pip install -I --upgrade ansible==2.2.1.0", "delta": "0:00:06.748179", "end": "2018-06-26 15:32:00.823846", "msg": "non-zero return code", "rc": 139, "start": "2018-06-26 15:31:54.075667", "stderr": "+ pip install -I --upgrade ansible==2.2.1.0
 Segmentation fault", "stderr_lines": ["+ pip install -I --upgrade ansible==2.2.1.0", "Segmentation fault"], "stdout": "Collecting ansible==2.2.1.0
 ```
-Fix: a commandline parameter causes pip to crash and kill the SSH connection. Replace syntax with parameters that do not cause the crash
+* Fix: a commandline parameter causes pip to crash and kill the SSH connection. Replace syntax with parameters that do not cause the crash
 (-U == --upgrade, -I == --ignore-installed)
-Edit 2 yml files:
+* Edit 2 yml files:
 deploy/system-prepare_play.yml
 ```yaml
 #raw: pip install -UI pyopenssl
@@ -312,37 +318,44 @@ Be patient. Task "Gathering Facts" takes longer to complete than before.
 cd ~/ansibledeploy/03-my-leihsV4.3.1/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
+```
 PLAY RECAP 
 leihs                      : ok=137  changed=62   unreachable=0    failed=0
+```
 
 # Upgrade to 4.4.0
 * Fix error during upgrade to v4.4.0 and v4.5.0 TASK [upgrade pyopenssl package]
-Fix: same as above. Files have not changed
-Copy over
+* Fix: same as above. Files have not changed
+Copy the fixed files
+```bash
 cd ~/ansibledeploy
 cp ./03-my-leihsV4.3.1/deploy/system-prepare_play.yml ./04-my-leihsV4.4.0/deploy/system-prepare_play.yml
 cp ./03-my-leihsV4.3.1/deploy/system-prepare_play.yml ./05-my-leihsV4.5.1/deploy/system-prepare_play.yml
-
+```
+```bash
 cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./04-my-leihsV4.4.0/deploy/roles/ansible/tasks/install_ansible.yml
 cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./05-my-leihsV4.5.1/deploy/roles/ansible/tasks/install_ansible.yml
-
+```
 * Run the playbook
 ```bash
 cd ~/ansibledeploy/04-my-leihsV4.4.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
+```
 PLAY RECAP 
 leihs                      : ok=141  changed=61   unreachable=0    failed=0
-
+```
 # Upgrade to 4.5.1
-After Installation of 4.5.1 you can see the version number of Leihs on the footer of the page
+* Hint: After Installation of 4.5.1 you can see the version number of Leihs on the footer of the page
 * Run the playbook
 ```bash
 cd ~/ansibledeploy/05-my-leihsV4.5.1/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
+```
 PLAY RECAP
 leihs                      : ok=141  changed=60   unreachable=0    failed=0 
+```
 
 # Upgrade to 4.6.0
 * Fix error during upgrade to v4.6.0 TASK [ansible : install ansible via pip]
@@ -356,11 +369,13 @@ cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./06-my-le
 cd ~/ansibledeploy/06-my-leihsV4.6.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 ```
+```
 PLAY RECAP
 leihs                      : ok=140  changed=60   unreachable=0    failed=0
+```
 
-# Additional hints
-You will probably not encounter these, but they caused me 2 days of work / reverse engineering. So I kept the errors and possible fix for reference
+# Additional hints for fixing errors
+You will probably not encounter these, but they caused me 3 days of work / reverse engineering. So I kept the errors and possible fix for reference
 
 ## Prevent error during TASK [leihs-database-install : install bundler and bundle]
 cd /leihs/database
