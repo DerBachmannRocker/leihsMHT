@@ -21,18 +21,17 @@ DerBachmannRocker
 ## Prerequisites
 Ensure your old `v3` server is at version [3.45.1](https://github.com/leihs/leihs/releases/tag/3.45.1). For this follow the official upgrade instructions described [here](https://github.com/leihs/leihs/wiki/Upgrades).
 Please make sure you have root access via SSH to both the v3 and v4 server, using public cert/key pair credentials. You need to be able to connect from your Ansible ("control") machine to both hosts with SSH, without using a password.
-* Debian Version of Leihs v3 Server
-I tested this process with Debian 8.10
+* Debian Version of Leihs v3 Server: I tested this process with Debian 8.10
 
 ## Ansible Setup
-* Create Ansible directory
+* Create Ansible directory: 
 On the control machine (Ansible workstation), do the following:
 Create a directory to hold your Ansible stuff. For example
 ```bash
 mkdir /home/yourusername/ansibledeploy
 ```
 
-* Inventory directory
+* Inventory directory: 
 Create a directory for your Ansible inventory and define your hosts
 ```bash
 mkdir ~/ansibledeploy/leihshosts
@@ -40,7 +39,7 @@ mkdir ~/ansibledeploy/leihshosts/group_vars
 mkdir ~/ansibledeploy/leihshosts/host_vars
 ```
 
-* hosts file
+* hosts file: 
 Specify the old and new hosts accordingly. 
 Create and edit the textfile `leihshosts/hosts` to have the following content:
 (do not modify this. It references the other yml files further below)
@@ -51,7 +50,7 @@ leihs-v3
 [leihs_server]
 leihs
 ```
-* leihs-v3.yml
+* leihs-v3.yml: 
 Then create and edit `leihshosts/host_vars/leihs-v3.yml` to have the following content:
 (edith every line here)
 ```yaml
@@ -62,11 +61,11 @@ leihs_v3_ruby_dir: path-to-rbenv-version-on-my-old-host
 leihs_v3_user: leihs-user-on-my-old-host
 ```
 
-### leihs_v3_ruby_dir hint:
+  * leihs_v3_ruby_dir hint: 
 On your Leihs v3 Server type `which ruby`. On Debian 8 I got this result, wich worked:
 /usr/local/rvm/rubies/ruby-2.3.3/bin
 
-### leihs_v3_user hint:
+  * leihs_v3_user hint: 
 User account with full read/write permission on leihs v3 DB. I noticed I accidentally set this to a nonexistent value and migration still succeeded.
 Try 'leihs' first, as this is the default. Possibly 'root' or 'www-data' both could also be sensible values.
 
