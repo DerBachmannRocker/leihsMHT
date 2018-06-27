@@ -37,6 +37,7 @@ Create a directory for your Ansible inventory and define your hosts
 mkdir ~/ansibledeploy/leihshosts
 mkdir ~/ansibledeploy/leihshosts/group_vars
 mkdir ~/ansibledeploy/leihshosts/host_vars
+mkdir ~/ansibledeploy/leihshosts/settings
 ```
 
 * hosts file: 
@@ -76,7 +77,28 @@ ansible_host: yourv4leihsserver.example.com
 ansible_user: root
 leihs_master_secret: secret
 database_dump_restore_file_path: '{{inventory_dir}}/normal.pgbin'
+#this file will only be relevant from v4.15.0 and upwards
+settings_file_path: '{{inventory_dir}}/settings/leihs_settings.yml'
 ```
+
+* settings.yml
+Create and edit 'settings/settings.yml'. This file will only be used v4.15.0 and upwards
+(change everything here to fit your environment)
+```yaml
+smtp_address: localhost
+smtp_port: 25
+smtp_domain: leihs.example.com
+local_currency_string: CHF
+ldap_config:
+mail_delivery_method: smtp
+smtp_username:
+smtp_password:
+smtp_enable_starttls_auto: f
+smtp_openssl_verify_mode: 0
+time_zone: Bern
+external_base_url: leihs.example.com # only used in ZHdK context
+```
+**time_zone** hint: Possible values for time_zone can be found [here](http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html)
 
 * group_vars/leihs.yml
 Create and edit `leihshosts/group_vars/leihs.yml`
@@ -169,6 +191,9 @@ do
     #hosts file
     rm $branchdir/my-inventory/hosts
     ln -s $referenceinventory/hosts $branchdir/my-inventory/hosts
+    #settings file
+    mkdir $branchdir/my-inventory/settings
+    ln -s $referenceinventory/settings/settings.yml $branchdir/my-inventory/settings/settings.yml
 done
 ```
 # Clone the Leihs v4.0.0 git repository
@@ -457,6 +482,7 @@ leihs                      : ok=138  changed=56   unreachable=0    failed=0
 cd ~/ansibledeploy/14-my-leihsV4.14.2/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=138  changed=56   unreachable=0    failed=0   
 ```
 * v4.15.0
 ```bash
