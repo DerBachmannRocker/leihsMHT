@@ -489,12 +489,14 @@ leihs                      : ok=138  changed=56   unreachable=0    failed=0
 cd ~/ansibledeploy/15-my-leihsV4.15.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=139  changed=55   unreachable=0    failed=0   
 ```
 * v4.16.1
 ```bash
 cd ~/ansibledeploy/16-my-leihsV4.16.1/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=139  changed=57   unreachable=0    failed=0   
 ```
 * v4.17.0
 ```bash
