@@ -375,7 +375,7 @@ leihs                      : ok=140  changed=60   unreachable=0    failed=0
 ```
 
 # Additional hints for fixing errors
-You will probably not encounter these, but they caused me 3 days of work / reverse engineering. So I kept the errors and possible fix for reference
+You will probably not encounter these errors, but they caused me 3 days of work / reverse engineering. So I kept this information here for future reference, just in case. Do not apply any of the fixes listed below, except you encounter the errors described.
 
 ## Prevent error during TASK [leihs-database-install : install bundler and bundle]
 cd /leihs/database
