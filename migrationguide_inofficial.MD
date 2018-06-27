@@ -373,6 +373,20 @@ PLAY RECAP
 leihs                      : ok=140  changed=60   unreachable=0    failed=0
 ```
 
+# Upgrade to 4.7.3
+* Fix error during upgrade to 4.7.3 TASK [ansible : install ansible via pip]
+```bash
+cp ./03-my-leihsV4.3.1/deploy/roles/ansible/tasks/install_ansible.yml ./07-my-leihsV4.7.3/deploy/roles/ansible/tasks/install_ansible.yml
+```
+* Run the playbook
+```bash
+cd ~/ansibledeploy/07-my-leihsV4.7.3/deploy
+ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
+```
+```
+PLAY RECAP
+```
+
 # Additional hints for fixing errors
 You will probably not encounter these errors, but they caused me 3 days of work / reverse engineering. So I kept this information here for future reference, just in case. Do not apply any of the fixes listed below, except you encounter the errors described.
 
