@@ -503,20 +503,30 @@ leihs                      : ok=139  changed=57   unreachable=0    failed=0
 cd ~/ansibledeploy/17-my-leihsV4.17.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=139  changed=57   unreachable=0    failed=0   
 ```
 * v4.18.0
 ```bash
 cd ~/ansibledeploy/18-my-leihsV4.18.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=139  changed=57   unreachable=0    failed=0   
 ```
 * v4.19.0
 ```bash
 cd ~/ansibledeploy/19-my-leihsV4.19.0/deploy
 ansible-playbook ./deploy_play.yml -i ../my-inventory/hosts -v
 PLAY RECAP
+leihs                      : ok=139  changed=60   unreachable=0    failed=0   
 ```
 ... and you are done!
+
+* LDAP config
+Copy over any LDAP config file you have from your old v3 installation to the new v4 server
+to:
+```
+/leihs/legacy/config/
+```
 
 # Additional hints for fixing errors
 You will probably not encounter these errors, but they caused me 3 days of work / reverse engineering. So I kept this information here for future reference, just in case. Do not apply any of the fixes listed below, except you encounter the errors described.
