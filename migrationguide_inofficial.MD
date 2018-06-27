@@ -87,10 +87,13 @@ Create and edit `leihshosts/group_vars/leihs.yml`
 ```
 
 # Helper script 'leihsclone.sh'
+..* Create empty script file
+```
 touch ~/ansibledeploy/leihsclone.sh
 chmod u+x ~/ansibledeploy/leihsclone.sh
+```
 
-Edit the script to have the following content
+..* Edit the script to have the following content
 ```bash
 #!/bin/bash
 
