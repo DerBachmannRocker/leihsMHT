@@ -60,12 +60,11 @@ leihs_v3_root_dir: path-to-leihs-directory-on-my-old-host
 leihs_v3_ruby_dir: path-to-rbenv-version-on-my-old-host
 leihs_v3_user: leihs-user-on-my-old-host
 ```
-
-  * leihs_v3_ruby_dir hint: 
+**leihs_v3_ruby_dir** hint: 
 On your Leihs v3 Server type `which ruby`. On Debian 8 I got this result, wich worked:
 /usr/local/rvm/rubies/ruby-2.3.3/bin
 
-  * leihs_v3_user hint: 
+**leihs_v3_user** hint: 
 User account with full read/write permission on leihs v3 DB. I noticed I accidentally set this to a nonexistent value and migration still succeeded.
 Try 'leihs' first, as this is the default. Possibly 'root' or 'www-data' both could also be sensible values.
 
