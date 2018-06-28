@@ -1,5 +1,10 @@
-Needed in settings.yml
-shibboleth_config: shibboleth.yml
+settings.yml
+```
+#Shibboleth_config does not exist in settings DB table
+#Do not comment in this line, or leihs-legacy service will not start
+#shibboleth_config: shibboleth.yml
+```
+
 
 shibboleth.yml
 ```
