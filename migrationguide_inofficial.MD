@@ -1,6 +1,6 @@
 # Upgrading from v3.45.1 to v4.19
 
-The steps below were tested in practice in June 2018 on Debian 9.4 as both Ansible ("control") machine and Leihs production server following the guide
+The steps below were tested in practice in June 2018 on Debian 9.4 as both Ansible ("control") machine and Leihs server following the guide
 [here](https://github.com/leihs/leihs-instance/blob/master/GUIDE.md)
 In doing so I encountered a lot of unanswered questions and lacking documentation. Therefore I hereby document the steps I did to upgrade my Leihs production server.
 There is no guarantee the information provided here is correct or particularly elegant. It is just the way I did things. On the positive side, what I did actually lead to a working upgraded Leihs instance.
