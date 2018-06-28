@@ -12,3 +12,21 @@ production:
     - v15053
     - v15067
 ```
+
+Start a Rails console inside your Leihs Legacy directory:
+```bash
+su leihs-legacy
+cd /leihs/legacy
+export PATH=$HOME/.rubies/ruby-<leihs_legacy_ruby_version>/bin:$PATH
+RAILS_ENV=production bundle exec rails console
+```
+You can find the value for leihs_legacy_ruby_version in ```/leihs/deploy/all.yml```.
+
+```bash
+shib = AuthenticationSystem.find_or_initialize_by(class_name: 'ShibbolethAuthentication')
+shib.name ||= 'Shibboleth Authentication'
+shib.is_default = false
+shib.is_active = true
+shib.save
+exit
+```
