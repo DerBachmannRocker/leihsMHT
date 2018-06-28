@@ -58,8 +58,19 @@ Set all auth mechanisms to false, except Shibboleth
 DB table ```authentication_systems```
 
 /etc/apache2/leihs/shared.conf
-# <Location />
-#    AuthType shibboleth
-#    ShibRequireSession On
-#    require valid-user
-#  </Location>
+```
+<Location />
+  AuthType shibboleth
+  ShibRequireSession On
+  require valid-user
+</Location>
+ 
+<Location /Shibboleth.sso>
+  SetHandler shib
+  Require all granted
+</Location>
+#Exclude the Shibboleth session hook from mod_proxy
+ProxyPass /Shibboleth.sso ! 
+ ```
+
+
