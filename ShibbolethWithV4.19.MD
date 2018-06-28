@@ -38,3 +38,6 @@ shib.is_active = true
 shib.save
 exit
 ```
+
+Set all auth mechanisms to false, except Shibboleth
+DB table ```authentication_systems```
