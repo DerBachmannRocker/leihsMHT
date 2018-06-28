@@ -1,3 +1,5 @@
+Warning: only https works with shibboleth.
+
 settings.yml
 ```
 #Shibboleth_config does not exist in settings DB table
