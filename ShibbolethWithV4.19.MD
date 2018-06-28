@@ -39,5 +39,27 @@ shib.save
 exit
 ```
 
+verify you set the correct names for user attributes. Only users with all attributes set are able to log in.
+example values that worked for me (email == mail!)
+```yaml
+production:
+  unique_id_field: uid
+  firstname_field: givenName
+  lastname_field: sn
+  mail_field: mail
+  admin_uids:
+    - v15053
+    - v15067
+ ```
+    
+ admin_uids: list of usernames that get admin privileges
+
 Set all auth mechanisms to false, except Shibboleth
 DB table ```authentication_systems```
+
+/etc/apache2/leihs/shared.conf
+# <Location />
+#    AuthType shibboleth
+#    ShibRequireSession On
+#    require valid-user
+#  </Location>
