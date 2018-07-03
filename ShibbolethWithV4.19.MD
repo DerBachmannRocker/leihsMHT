@@ -650,7 +650,7 @@ RAILS_ENV=production bundle exec rails console
 ```bash
 shib = AuthenticationSystem.find_or_initialize_by(class_name: 'ShibbolethAuthentication')
 shib.name ||= 'Shibboleth Authentication'
-shib.is_default = false
+shib.is_default = true
 shib.is_active = true
 shib.save
 
