@@ -45,6 +45,7 @@ ldap.is_default = false
 ldap.is_active = false
 ldap.save
 exit
+systemctl restart leihs-legacy
 ```
 
 verify you set the correct names for user attributes. Only users with all attributes set are able to log in.
