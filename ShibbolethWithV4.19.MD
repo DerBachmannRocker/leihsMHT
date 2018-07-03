@@ -23,7 +23,7 @@ production:
 Start a Rails console inside your Leihs Legacy directory:
 You can find the value for leihs_legacy_ruby_version in ```/leihs/deploy/all.yml```.
 ```bash
-cat /leihs/deploy/all.yml | grep 'leihs_legacy_ruby_version'```
+cat /leihs/deploy/all.yml | grep 'leihs_legacy_ruby_version'
 ```
 ```bash
 su leihs-legacy
@@ -38,6 +38,12 @@ shib.name ||= 'Shibboleth Authentication'
 shib.is_default = false
 shib.is_active = true
 shib.save
+
+ldap = AuthenticationSystem.find_or_initialize_by(class_name: 'LdapAuthentication')
+ldap.name ||= 'LDAP Authentication'
+ldap.is_default = false
+ldap.is_active = false
+ldap.save
 exit
 ```
 
