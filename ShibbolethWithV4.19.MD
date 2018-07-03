@@ -547,7 +547,7 @@ end
 
 #Franzkoch
 RemoteIPHeader X-Forwarded-For
-RemoteIPInternalProxy dmz-gwext01.mhtnet.example.com
+RemoteIPInternalProxy yourinternetreverseproxy.internal.example.com
 #/Franzkoch
 
 <VirtualHost *:443>
